@@ -36,8 +36,5 @@ Inventory-Management-System/
 └── index.php        (Main entry point)
 ```
 
-## Team Members
-(To be added)
-
 ## License
 MIT License
