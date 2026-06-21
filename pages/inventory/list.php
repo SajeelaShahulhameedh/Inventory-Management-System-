@@ -45,8 +45,8 @@ require_once '../../includes/layout.php';
                     <td><span class="fw-bold"><?php echo $item['current_stock']; ?></span></td>
                     <td><?php echo $item['minimum_stock']; ?></td>
                     <td><?php echo $item['maximum_stock']; ?></td>
-                    <td>$<?php echo number_format($item['unit_price'], 2); ?></td>
-                    <td>$<?php echo number_format($stockValue, 2); ?></td>
+                    <td>Rs. <?php echo number_format($item['unit_price'], 2); ?></td>
+                    <td>Rs. <?php echo number_format($stockValue, 2); ?></td>
                     <td><span class="badge <?php echo $badge; ?>"><?php echo $status; ?></span></td>
                     <td>
                         <div class="action-buttons">

@@ -1,135 +1,60 @@
 <?php
-/**
- * VIEW SUPPLIER PAGE
- * Display detailed supplier information
- */
-
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
-$supplier = new Supplier($conn);
+$supplier    = new Supplier($conn);
 $supplier_id = $_GET['id'] ?? 0;
-
-if ($supplier_id <= 0) {
-    header("Location: list.php");
-    exit;
-}
-
+if ($supplier_id <= 0) { header("Location: list.php"); exit; }
 $supplierData = $supplier->getSupplierById($supplier_id);
+if (!$supplierData) { header("Location: list.php"); exit; }
 
-if (!$supplierData) {
-    header("Location: list.php");
-    exit;
-}
-
+$pageTitle = htmlspecialchars($supplierData['supplier_name']);
+$pageSubtitle = 'Supplier Profile';
+$activeMenu = 'suppliers'; $cssPath = '../../assets/css/style.css';
+$jsPath = '../../assets/js/script.js'; $basePath = '../../';
+require_once '../../includes/layout.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($supplierData['supplier_name']); ?> - Inventory Management System</title>
-    <
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
-<body>
-    <!-- HEADER -->
-    <header>
-        <h1>📦 Inventory Management System</h1>
-    </header>
 
-    <!-- NAVIGATION -->
-    <nav>
-        <ul>
-            <li><a href="../../index.php">Dashboard</a></li>
-            <li><a href="../../pages/products/list.php">Products</a></li>
-            <li><a href="../../pages/inventory/list.php">Inventory</a></li>
-            <li><a href="list.php" class="active">Suppliers</a></li>
-            <li><a href="../../pages/reports/index.php">Reports</a></li>
-        </ul>
-    </nav>
+<div class="page-header">
+    <div><h1><?php echo htmlspecialchars($supplierData['supplier_name']); ?></h1><p>Supplier Profile</p></div>
+    <div style="display:flex;gap:10px;">
+        <a href="edit.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-warning">Edit</a>
+        <a href="list.php" class="btn btn-secondary">← Back</a>
+    </div>
+</div>
 
-    <!-- MAIN CONTAINER -->
-    <div class="container">
-        <div class="content">
-            <!-- PAGE TITLE -->
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1><?php echo htmlspecialchars($supplierData['supplier_name']); ?></h1>
-                    <p class="text-muted">Supplier Profile</p>
-                </div>
-                <div>
-                    <a href="edit.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-warning">Edit</a>
-                    <a href="list.php" class="btn btn-secondary">Back</a>
-                </div>
-            </div>
-
-            <!-- SUPPLIER DETAILS -->
-            <div class="grid-2">
-                <!-- Contact Information -->
-                <div class="card">
-                    <div class="card-title">Contact Information</div>
-                    <div class="card-body">
-                        <p>
-                            <strong>Contact Person:</strong><br>
-                            <?php echo htmlspecialchars($supplierData['contact_person'] ?? 'Not provided'); ?>
-                        </p>
-                        <p>
-                            <strong>Email:</strong><br>
-                            <?php if (!empty($supplierData['email'])): ?>
-                                <a href="mailto:<?php echo htmlspecialchars($supplierData['email']); ?>">
-                                    <?php echo htmlspecialchars($supplierData['email']); ?>
-                                </a>
-                            <?php else: ?>
-                                Not provided
-                            <?php endif; ?>
-                        </p>
-                        <p>
-                            <strong>Phone:</strong><br>
-                            <?php if (!empty($supplierData['phone'])): ?>
-                                <a href="tel:<?php echo htmlspecialchars($supplierData['phone']); ?>">
-                                    <?php echo htmlspecialchars($supplierData['phone']); ?>
-                                </a>
-                            <?php else: ?>
-                                Not provided
-                            <?php endif; ?>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Address Information -->
-                <div class="card">
-                    <div class="card-title">Address</div>
-                    <div class="card-body">
-                        <p>
-                            <?php 
-                            $address = [];
-                            if (!empty($supplierData['address'])) $address[] = htmlspecialchars($supplierData['address']);
-                            if (!empty($supplierData['city'])) $address[] = htmlspecialchars($supplierData['city']);
-                            if (!empty($supplierData['state'])) $address[] = htmlspecialchars($supplierData['state']);
-                            if (!empty($supplierData['zip_code'])) $address[] = htmlspecialchars($supplierData['zip_code']);
-                            
-                            echo !empty($address) ? implode('<br>', $address) : 'Not provided';
-                            ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ACTION BUTTONS -->
-            <div style="margin: 30px 0; display: flex; gap: 10px;">
-                <a href="edit.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-warning">Edit Supplier</a>
-                <a href="delete.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-danger" onclick="return confirmDelete('<?php echo htmlspecialchars($supplierData['supplier_name']); ?>')">Delete Supplier</a>
-            </div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div class="card">
+        <div class="card-header"><h3>Contact Information</h3></div>
+        <div class="card-body">
+            <table style="margin:0;">
+                <tbody>
+                    <tr><td class="text-muted" style="width:140px;">Contact Person</td><td><?php echo htmlspecialchars($supplierData['contact_person'] ?? '—'); ?></td></tr>
+                    <tr><td class="text-muted">Email</td><td><?php echo !empty($supplierData['email']) ? '<a href="mailto:'.htmlspecialchars($supplierData['email']).'">'.htmlspecialchars($supplierData['email']).'</a>' : '—'; ?></td></tr>
+                    <tr><td class="text-muted">Phone</td><td><?php echo !empty($supplierData['phone']) ? '<a href="tel:'.htmlspecialchars($supplierData['phone']).'">'.htmlspecialchars($supplierData['phone']).'</a>' : '—'; ?></td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    <div class="card">
+        <div class="card-header"><h3>Address</h3></div>
+        <div class="card-body">
+            <?php
+            $parts = array_filter([
+                $supplierData['address'] ?? '',
+                $supplierData['city'] ?? '',
+                $supplierData['state'] ?? '',
+                $supplierData['zip_code'] ?? ''
+            ]);
+            echo !empty($parts) ? implode('<br>', array_map('htmlspecialchars', $parts)) : '<span class="text-muted">Not provided</span>';
+            ?>
+        </div>
+    </div>
+</div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2024 Inventory Management System. All rights reserved.</p>
-    </footer>
+<div style="display:flex;gap:10px;margin-top:8px;">
+    <a href="edit.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-warning">Edit Supplier</a>
+    <a href="delete.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this supplier?')">Delete Supplier</a>
+</div>
 
-    <!-- SCRIPTS -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-</html>
+<?php require_once '../../includes/layout-end.php'; ?>

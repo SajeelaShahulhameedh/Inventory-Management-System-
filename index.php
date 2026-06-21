@@ -61,7 +61,7 @@ require_once 'includes/layout.php';
         <div class="stat-icon yellow">💰</div>
         <div class="stat-info">
             <div class="stat-label">Inventory Value</div>
-            <div class="stat-number" style="font-size:20px;">$<?php echo number_format($totalInventoryValue, 0); ?></div>
+            <div class="stat-number" style="font-size:20px;">Rs. <?php echo number_format($totalInventoryValue, 0); ?></div>
             <a href="pages/reports/inventory-report.php" class="stat-link">Full report →</a>
         </div>
     </div>
@@ -91,7 +91,7 @@ require_once 'includes/layout.php';
 <div class="value-banner">
     <div>
         <h3>TOTAL INVENTORY VALUE</h3>
-        <div class="value">$<?php echo number_format($totalInventoryValue, 2); ?></div>
+        <div class="value">Rs. <?php echo number_format($totalInventoryValue, 2); ?></div>
         <p>Based on current stock levels × unit prices</p>
     </div>
     <div style="font-size: 48px; opacity: 0.3;">💰</div>
@@ -141,7 +141,7 @@ require_once 'includes/layout.php';
                 <tr>
                     <td><span class="fw-600"><?php echo htmlspecialchars($prod['product_name']); ?></span></td>
                     <td><code><?php echo htmlspecialchars($prod['product_code']); ?></code></td>
-                    <td>$<?php echo number_format($prod['unit_price'], 2); ?></td>
+                    <td>Rs. <?php echo number_format($prod['unit_price'], 2); ?></td>
                     <td><a href="pages/products/view.php?id=<?php echo $prod['product_id']; ?>" class="btn btn-sm btn-secondary">View</a></td>
                 </tr>
                 <?php endforeach; ?>
