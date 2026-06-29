@@ -53,6 +53,27 @@ class Inventory {
     }
     
     /**
+     * CREATE INVENTORY RECORD
+     * Creates the initial stock record for a newly added product
+     *
+     * @param int $product_id - Product ID
+     * @param int $current_stock - Starting stock quantity
+     * @param int $minimum_stock - Reorder threshold
+     * @param int $maximum_stock - Maximum stock capacity
+     * @return bool - True if successful
+     */
+    public function createInventory($product_id, $current_stock = 0, $minimum_stock = 10, $maximum_stock = 100) {
+        $query = "INSERT INTO " . $this->inventory_table .
+                 " (product_id, current_stock, minimum_stock, maximum_stock, last_restock_date)
+                  VALUES (?, ?, ?, ?, NOW())";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('iiii', $product_id, $current_stock, $minimum_stock, $maximum_stock);
+
+        return $stmt->execute();
+    }
+
+    /**
      * GET INVENTORY BY PRODUCT ID
      * 
      * @param int $product_id - Product ID

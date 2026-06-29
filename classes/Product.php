@@ -120,9 +120,15 @@ class Product {
             $this->image_url
         );
         
-        return $stmt->execute();
+        $success = $stmt->execute();
+
+        if ($success) {
+            $this->product_id = $this->conn->insert_id;
+        }
+
+        return $success;
     }
-    
+
     /**
      * UPDATE PRODUCT
      * Updates an existing product's information
