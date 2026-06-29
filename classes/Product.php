@@ -40,11 +40,13 @@ class Product {
      * @return array - Array of products or false if error
      */
     public function getAllProducts() {
-        $query = "SELECT p.*, c.category_name, s.supplier_name 
+        $query = "SELECT p.*, c.category_name, s.supplier_name,
+                         i.current_stock, i.minimum_stock, i.maximum_stock
                   FROM " . $this->table . " p
                   LEFT JOIN categories c ON p.category_id = c.category_id
                   LEFT JOIN suppliers s ON p.supplier_id = s.supplier_id
-                  ORDER BY p.created_at DESC";
+                  LEFT JOIN inventory i ON p.product_id = i.product_id
+                  ORDER BY c.category_name ASC, p.product_name ASC";
         
         $result = $this->conn->query($query);
         
@@ -177,10 +179,12 @@ class Product {
      * @return array - Matching products or false
      */
     public function searchProducts($keyword) {
-        $query = "SELECT p.*, c.category_name, s.supplier_name 
+        $query = "SELECT p.*, c.category_name, s.supplier_name,
+                         i.current_stock, i.minimum_stock, i.maximum_stock
                   FROM " . $this->table . " p
                   LEFT JOIN categories c ON p.category_id = c.category_id
                   LEFT JOIN suppliers s ON p.supplier_id = s.supplier_id
+                  LEFT JOIN inventory i ON p.product_id = i.product_id
                   WHERE p.product_name LIKE ? OR p.product_code LIKE ?
                   ORDER BY p.product_name ASC";
         
