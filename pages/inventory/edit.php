@@ -42,15 +42,15 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Current Stock <span class="text-danger">*</span></label>
-                    <input type="number" name="current_stock" value="<?php echo htmlspecialchars($inventoryData['current_stock']); ?>" min="0" required>
+                    <input type="number" id="current_stock" name="current_stock" value="<?php echo htmlspecialchars($inventoryData['current_stock']); ?>" min="0" required>
                 </div>
                 <div class="form-group">
                     <label>Minimum Stock Level <span class="text-danger">*</span></label>
-                    <input type="number" name="minimum_stock" value="<?php echo htmlspecialchars($inventoryData['minimum_stock']); ?>" min="0" required>
+                    <input type="number" id="minimum_stock" name="minimum_stock" value="<?php echo htmlspecialchars($inventoryData['minimum_stock']); ?>" min="0" required>
                 </div>
                 <div class="form-group">
                     <label>Maximum Stock Level <span class="text-danger">*</span></label>
-                    <input type="number" name="maximum_stock" value="<?php echo htmlspecialchars($inventoryData['maximum_stock']); ?>" min="0" required>
+                    <input type="number" id="maximum_stock" name="maximum_stock" value="<?php echo htmlspecialchars($inventoryData['maximum_stock']); ?>" min="0" required>
                 </div>
             </div>
 

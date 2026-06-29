@@ -46,17 +46,17 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Product Name <span class="text-danger">*</span></label>
-                    <input type="text" name="product_name" value="<?php echo htmlspecialchars($productData['product_name']); ?>" required>
+                    <input type="text" id="product_name" name="product_name" value="<?php echo htmlspecialchars($productData['product_name']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label>Product Code <span class="text-danger">*</span></label>
-                    <input type="text" name="product_code" value="<?php echo htmlspecialchars($productData['product_code']); ?>" required>
+                    <input type="text" id="product_code" name="product_code" value="<?php echo htmlspecialchars($productData['product_code']); ?>" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Category <span class="text-danger">*</span></label>
-                    <select name="category_id" required>
+                    <select id="category_id" name="category_id" required>
                         <option value="">-- Select Category --</option>
                         <option value="1" <?php echo $productData['category_id']==1?'selected':''; ?>>Electronics</option>
                         <option value="2" <?php echo $productData['category_id']==2?'selected':''; ?>>Furniture</option>
@@ -67,7 +67,7 @@ require_once '../../includes/layout.php';
                 </div>
                 <div class="form-group">
                     <label>Supplier <span class="text-danger">*</span></label>
-                    <select name="supplier_id" required>
+                    <select id="supplier_id" name="supplier_id" required>
                         <option value="">-- Select Supplier --</option>
                         <option value="1" <?php echo $productData['supplier_id']==1?'selected':''; ?>>Supplier 1</option>
                         <option value="2" <?php echo $productData['supplier_id']==2?'selected':''; ?>>Supplier 2</option>
@@ -78,7 +78,7 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Unit Price (Rs.) <span class="text-danger">*</span></label>
-                    <input type="number" name="unit_price" value="<?php echo htmlspecialchars($productData['unit_price']); ?>" step="0.01" min="0" required>
+                    <input type="number" id="unit_price" name="unit_price" value="<?php echo htmlspecialchars($productData['unit_price']); ?>" step="0.01" min="0" required>
                 </div>
                 <div class="form-group">
                     <label>Image URL</label>

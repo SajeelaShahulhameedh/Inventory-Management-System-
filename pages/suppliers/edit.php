@@ -47,7 +47,7 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Supplier Name <span class="text-danger">*</span></label>
-                    <input type="text" name="supplier_name" value="<?php echo htmlspecialchars($supplierData['supplier_name']); ?>" required>
+                    <input type="text" id="supplier_name" name="supplier_name" value="<?php echo htmlspecialchars($supplierData['supplier_name']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label>Contact Person</label>
@@ -57,11 +57,11 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email" value="<?php echo htmlspecialchars($supplierData['email'] ?? ''); ?>">
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($supplierData['email'] ?? ''); ?>">
                 </div>
                 <div class="form-group">
                     <label>Phone</label>
-                    <input type="text" name="phone" value="<?php echo htmlspecialchars($supplierData['phone'] ?? ''); ?>">
+                    <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($supplierData['phone'] ?? ''); ?>">
                 </div>
             </div>
             <div class="form-group">

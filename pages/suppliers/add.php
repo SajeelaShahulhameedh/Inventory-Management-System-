@@ -51,7 +51,7 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Supplier Name <span class="text-danger">*</span></label>
-                    <input type="text" name="supplier_name" value="<?php echo htmlspecialchars($supplier->supplier_name ?? ''); ?>" placeholder="Company name" required>
+                    <input type="text" id="supplier_name" name="supplier_name" value="<?php echo htmlspecialchars($supplier->supplier_name ?? ''); ?>" placeholder="Company name" required>
                 </div>
                 <div class="form-group">
                     <label>Contact Person</label>
@@ -61,11 +61,11 @@ require_once '../../includes/layout.php';
             <div class="form-row">
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="email" value="<?php echo htmlspecialchars($supplier->email ?? ''); ?>" placeholder="email@example.com">
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($supplier->email ?? ''); ?>" placeholder="email@example.com">
                 </div>
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="text" name="phone" value="<?php echo htmlspecialchars($supplier->phone ?? ''); ?>" placeholder="+1 234 567 890">
+                    <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($supplier->phone ?? ''); ?>" placeholder="+1 234 567 890">
                 </div>
             </div>
             <div class="form-group">
