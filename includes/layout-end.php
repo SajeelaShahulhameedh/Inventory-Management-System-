@@ -1,7 +1,7 @@
 </div><!-- end page-content -->
 
     <footer>
-        <p>&copy; 2024 InvenTrack — Inventory Management System. All rights reserved.</p>
+        <p>&copy; 2026 InvenTrack — Inventory Management System. All rights reserved.</p>
     </footer>
 
 </div><!-- end main-wrapper -->

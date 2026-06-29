@@ -32,10 +32,18 @@ require_once '../../includes/layout.php';
     <div class="table-responsive">
         <?php if ($products): ?>
         <table>
-            <thead><tr><th>Product Name</th><th>Code</th><th>Category</th><th>Supplier</th><th>Unit Price</th><th>Actions</th></tr></thead>
+            <thead><tr><th></th><th>Product Name</th><th>Code</th><th>Category</th><th>Supplier</th><th>Unit Price</th><th>Actions</th></tr></thead>
             <tbody>
                 <?php foreach ($products as $prod): ?>
                 <tr>
+                    <td style="width:54px;">
+                        <?php if (!empty($prod['image_url'])): ?>
+                            <img src="<?php echo htmlspecialchars($prod['image_url']); ?>" alt="" class="product-thumb" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="product-thumb-fallback" style="display:none;">📦</div>
+                        <?php else: ?>
+                            <div class="product-thumb-fallback">📦</div>
+                        <?php endif; ?>
+                    </td>
                     <td><span class="fw-600"><?php echo htmlspecialchars($prod['product_name']); ?></span></td>
                     <td><code><?php echo htmlspecialchars($prod['product_code']); ?></code></td>
                     <td><?php echo htmlspecialchars($prod['category_name'] ?? '—'); ?></td>

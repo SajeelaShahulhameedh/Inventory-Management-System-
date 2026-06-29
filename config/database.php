@@ -23,7 +23,7 @@ define('DB_PASS', '');
 define('DB_NAME', 'inventory_system');
 
 // Database port (default is 3306)
-define('DB_PORT', 3307);
+define('DB_PORT', 3306);
 
 // =============================================
 // CREATE DATABASE CONNECTION

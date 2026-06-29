@@ -26,7 +26,18 @@ require_once '../../includes/layout.php';
     </div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+<div style="display:grid;grid-template-columns:280px 1fr 1fr;gap:24px;">
+    <div class="card">
+        <div class="card-header"><h3>Photo</h3></div>
+        <div class="card-body" style="padding:0;">
+            <?php if (!empty($productData['image_url'])): ?>
+                <img src="<?php echo htmlspecialchars($productData['image_url']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="product-photo-fallback" style="display:none;">📦</div>
+            <?php else: ?>
+                <div class="product-photo-fallback">📦</div>
+            <?php endif; ?>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header"><h3>Product Information</h3></div>
         <div class="card-body">
