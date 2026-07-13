@@ -2,32 +2,51 @@
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
 require_once '../../classes/Inventory.php';
+require_once '../../classes/Category.php';
+require_once '../../classes/Supplier.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 $product   = new Product($conn);
 $inventory = new Inventory($conn);
+$categoryObj = new Category($conn);
+$supplierObj = new Supplier($conn);
+$categories = $categoryObj->getAll();
+$suppliers = $supplierObj->getAllSuppliers();
+
 $message   = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $product->product_name = $_POST['product_name'] ?? '';
-    $product->product_code = $_POST['product_code'] ?? '';
-    $product->category_id  = $_POST['category_id'] ?? 0;
-    $product->supplier_id  = $_POST['supplier_id'] ?? 0;
-    $product->unit_price   = $_POST['unit_price'] ?? 0;
-    $product->description  = $_POST['description'] ?? '';
-    $product->image_url    = $_POST['image_url'] ?? '';
-
-    $initialStock  = (int)($_POST['current_stock'] ?? 0);
-    $minimumStock  = (int)($_POST['minimum_stock'] ?? 10);
-    $maximumStock  = (int)($_POST['maximum_stock'] ?? 100);
-
-    if ($product->addProduct()) {
-        // Create the matching inventory record so stock shows up immediately
-        $inventory->createInventory($product->product_id, $initialStock, $minimumStock, $maximumStock);
-
-        $message = '<div class="alert alert-success">Product added successfully! <a href="list.php">View all products →</a></div>';
-        header("refresh:2;url=list.php");
+    // CSRF check
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $message = '<div class="alert alert-danger">Invalid CSRF token.</div>';
     } else {
-        $message = '<div class="alert alert-danger">Error adding product. Please try again.</div>';
+        $product->product_name = trim($_POST['product_name'] ?? '');
+        $product->product_code = trim($_POST['product_code'] ?? '');
+        $product->category_id  = (int)($_POST['category_id'] ?? 0);
+        $product->supplier_id  = (int)($_POST['supplier_id'] ?? 0);
+        $product->unit_price   = (float)($_POST['unit_price'] ?? 0);
+        $product->description  = trim($_POST['description'] ?? '');
+        $product->image_url    = trim($_POST['image_url'] ?? '');
+
+        $initialStock  = max(0, (int)($_POST['current_stock'] ?? 0));
+        $minimumStock  = max(0, (int)($_POST['minimum_stock'] ?? 10));
+        $maximumStock  = max(0, (int)($_POST['maximum_stock'] ?? 100));
+
+        // Basic server-side validation
+        if ($product->product_name === '' || $product->product_code === '' || $product->category_id <= 0 || $product->supplier_id <= 0) {
+            $message = '<div class="alert alert-danger">Please fill required fields.</div>';
+        } else {
+            if ($product->addProduct()) {
+                // Create the matching inventory record so stock shows up immediately
+                $inventory->createInventory($product->product_id, $initialStock, $minimumStock, $maximumStock);
+
+                $message = '<div class="alert alert-success">Product added successfully! <a href="list.php">View all products →</a></div>';
+                header("refresh:2;url=list.php");
+            } else {
+                $message = '<div class="alert alert-danger">Error adding product. Please try again.</div>';
+            }
+        }
     }
 }
 
@@ -48,6 +67,7 @@ require_once '../../includes/layout.php';
     <div class="card-header"><h3>Product Details</h3></div>
     <div class="card-body">
         <form method="POST" onsubmit="return validateProductForm()">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
             <div class="form-row">
                 <div class="form-group">
                     <label>Product Name <span class="text-danger">*</span></label>
@@ -63,20 +83,18 @@ require_once '../../includes/layout.php';
                     <label>Category <span class="text-danger">*</span></label>
                     <select id="category_id" name="category_id" required>
                         <option value="">-- Select Category --</option>
-                        <option value="1">Electronics</option>
-                        <option value="2">Furniture</option>
-                        <option value="3">Office Supplies</option>
-                        <option value="4">Tools</option>
-                        <option value="5">Other</option>
+                        <?php foreach ($categories as $c): ?>
+                            <option value="<?php echo (int)$c['category_id']; ?>"><?php echo htmlspecialchars($c['category_name']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Supplier <span class="text-danger">*</span></label>
                     <select id="supplier_id" name="supplier_id" required>
                         <option value="">-- Select Supplier --</option>
-                        <option value="1">Supplier 1</option>
-                        <option value="2">Supplier 2</option>
-                        <option value="3">Supplier 3</option>
+                        <?php foreach ($suppliers as $s): ?>
+                            <option value="<?php echo (int)$s['supplier_id']; ?>"><?php echo htmlspecialchars($s['supplier_name']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
