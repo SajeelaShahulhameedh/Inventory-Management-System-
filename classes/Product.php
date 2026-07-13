@@ -139,7 +139,7 @@ class Product {
         $query = "UPDATE " . $this->table . 
                  " SET product_name = ?, product_code = ?, category_id = ?, supplier_id = ?, 
                        unit_price = ?, description = ?, image_url = ? 
-                  WHERE product_id = ?";
+                   WHERE product_id = ?";
         
         $stmt = $this->conn->prepare($query);
         
@@ -147,7 +147,8 @@ class Product {
             return false;
         }
         
-        $stmt->bind_param('ssiiddsi',
+        // Correct parameter types: s = string, i = integer, d = double
+        $stmt->bind_param('ssiidssi',
             $this->product_name,
             $this->product_code,
             $this->category_id,
@@ -163,18 +164,37 @@ class Product {
     
     /**
      * DELETE PRODUCT
-     * Deletes a product from the database
+     * Deletes a product and related inventory records from the database
      * 
      * @param int $id - Product ID
      * @return bool - True if successful, false otherwise
      */
     public function deleteProduct($id) {
-        $query = "DELETE FROM " . $this->table . " WHERE product_id = ?";
-        
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $id);
-        
-        return $stmt->execute();
+        // Use a transaction to remove dependent rows first to satisfy foreign keys
+        $this->conn->begin_transaction();
+        try {
+            // Delete inventory transactions
+            $q1 = $this->conn->prepare("DELETE FROM inventory_transactions WHERE product_id = ?");
+            $q1->bind_param('i', $id);
+            $q1->execute();
+
+            // Delete inventory
+            $q2 = $this->conn->prepare("DELETE FROM inventory WHERE product_id = ?");
+            $q2->bind_param('i', $id);
+            $q2->execute();
+
+            // Delete product
+            $q3 = $this->conn->prepare("DELETE FROM " . $this->table . " WHERE product_id = ?");
+            $q3->bind_param('i', $id);
+            $q3->execute();
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            error_log('Delete product failed: ' . $e->getMessage());
+            return false;
+        }
     }
     
     /**
