@@ -1,3 +1,7 @@
+<?php
+$assetBase = isset($basePath) && $basePath !== '' ? rtrim($basePath, '/') . '/' : '../';
+$resolvedJs = isset($jsPath) ? $jsPath : ($assetBase . 'assets/js/script.js');
+?>
 </div><!-- end page-content -->
 
     <footer>
@@ -6,6 +10,6 @@
 
 </div><!-- end main-wrapper -->
 
-<script src="<?php echo $jsPath ?? '../assets/js/script.js'; ?>"></script>
+<script defer src="<?php echo htmlspecialchars($resolvedJs); ?>"></script>
 </body>
 </html>
