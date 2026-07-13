@@ -7,8 +7,13 @@
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
 
+// Ensure session available for CSRF
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $product = new Product($conn);
-$product_id = $_GET['id'] ?? 0;
+$product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($product_id <= 0) {
     header("Location: list.php");
@@ -23,10 +28,21 @@ if (!$productData) {
 }
 
 // Handle deletion
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
-    if ($product->deleteProduct($product_id)) {
-        header("Location: list.php?message=deleted");
-        exit;
+$errorMsg = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    // CSRF check
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $errorMsg = 'Invalid CSRF token. Please reload the page and try again.';
+    } else {
+        $ok = $product->deleteProduct($product_id);
+        if ($ok) {
+            header("Location: list.php?message=deleted");
+            exit;
+        } else {
+            $errorMsg = 'Failed to delete product. See server log for details.';
+            // DEV DEBUG: append DB error (remove in production)
+            $errorMsg .= ' (DB error: ' . htmlspecialchars($conn->error) . ')';
+        }
     }
 }
 
@@ -64,6 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
                 <strong>⚠️ Warning!</strong> You are about to delete a product. This action cannot be undone.
             </div>
 
+            <?php if (!empty($errorMsg)): ?>
+                <div class="alert alert-danger" style="margin-bottom:18px;">
+                    <?php echo $errorMsg; ?>
+                </div>
+            <?php endif; ?>
+
             <!-- PRODUCT INFO -->
             <div class="card" style="margin: 20px 0;">
                 <div class="card-title">Product to Delete</div>
@@ -76,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
 
             <!-- CONFIRMATION FORM -->
             <form method="POST" style="margin: 30px 0;">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
+
                 <div style="background-color: #fff3cd; border-left: 4px solid #f39c12; padding: 15px; border-radius: 5px; margin: 20px 0;">
                     <p style="margin: 0;">
                         <strong>Are you sure you want to delete this product?</strong><br>
