@@ -9,6 +9,16 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Generate CSRF token for forms
+if (empty($_SESSION['csrf_token'])) {
+    try {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    } catch (Exception $e) {
+        // Fallback
+        $_SESSION['csrf_token'] = bin2hex(openssl_random_pseudo_bytes(32));
+    }
+}
+
 // Resolve asset base path safely
 $assetBase = '';
 if (isset($basePath) && $basePath !== '') {
@@ -30,7 +40,6 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle ?? 'Inventory System'); ?></title>
     <link rel="stylesheet" href="<?php echo htmlspecialchars($resolvedCss); ?>">
-    <?php /* debug: resolved CSS path: <?php echo htmlspecialchars($resolvedCss); ?> */ ?>
 </head>
 <body>
 
@@ -94,6 +103,13 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
             <a href="<?php echo $basePath ?? '../'; ?>pages/reports/index.php"
                class="<?php echo ($activeMenu === 'reports') ? 'active' : ''; ?>">
                 <span class="menu-icon">📊</span> Reports
+            </a>
+        </li>
+
+        <li>
+            <a href="<?php echo $basePath ?? '../'; ?>pages/categories/list.php"
+               class="<?php echo ($activeMenu === 'categories') ? 'active' : ''; ?>">
+                <span class="menu-icon">🗂️</span> Categories
             </a>
         </li>
     </ul>
