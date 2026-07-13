@@ -4,6 +4,24 @@
  * Include at the top of every page
  * Required vars: $pageTitle, $activeMenu, $cssPath, $basePath
  */
+// Ensure session is started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Resolve asset base path safely
+$assetBase = '';
+if (isset($basePath) && $basePath !== '') {
+    // ensure trailing slash
+    $assetBase = rtrim($basePath, '/') . '/';
+} else {
+    // default to project-root relative path
+    $assetBase = '../';
+}
+
+// Allow pages to override full paths by setting $cssPath or $jsPath
+$resolvedCss = isset($cssPath) ? $cssPath : ($assetBase . 'assets/css/style.css');
+$resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +29,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle ?? 'Inventory System'); ?></title>
-    <link rel="stylesheet" href="<?php echo $cssPath ?? '../assets/css/style.css'; ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($resolvedCss); ?>">
+    <?php /* debug: resolved CSS path: <?php echo htmlspecialchars($resolvedCss); ?> */ ?>
 </head>
 <body>
 
