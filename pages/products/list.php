@@ -2,11 +2,11 @@
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
 
-$product    = new Product($conn);
+$product = new Product($conn);
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-$view       = isset($_GET['view']) && $_GET['view'] === 'table' ? 'table' : 'grid';
-$products   = !empty($searchTerm) ? $product->searchProducts($searchTerm) : $product->getAllProducts();
-$products   = $products ?: [];
+$view = isset($_GET['view']) && $_GET['view'] === 'table' ? 'table' : 'grid';
+$products = !empty($searchTerm) ? $product->searchProducts($searchTerm) : $product->getAllProducts();
+$products = $products ?: [];
 
 // Group products by category for the grid view
 $grouped = [];
@@ -17,7 +17,7 @@ foreach ($products as $p) {
 }
 
 $totalProducts = count($products);
-$totalItems    = array_sum(array_map(fn($p) => (int)($p['current_stock'] ?? 0), $products));
+$totalItems = array_sum(array_map(fn($p) => (int)($p['current_stock'] ?? 0), $products));
 
 $pageTitle = 'Products'; $pageSubtitle = 'Manage all your products';
 $activeMenu = 'products'; $cssPath = '../../assets/css/style.css';
@@ -36,7 +36,7 @@ require_once '../../includes/layout.php';
 <div class="product-toolbar">
     <form method="GET" class="product-search-form">
         <input type="hidden" name="view" value="<?php echo htmlspecialchars($view); ?>">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><?php echo icon('search', 16); ?></span>
         <input type="text" name="search" placeholder="Search products by name or code..." value="<?php echo htmlspecialchars($searchTerm); ?>">
         <?php if (!empty($searchTerm)): ?><a href="list.php?view=<?php echo $view; ?>" class="btn btn-secondary btn-sm">Clear</a><?php endif; ?>
     </form>
@@ -52,7 +52,7 @@ require_once '../../includes/layout.php';
 
 <?php if (empty($products)): ?>
 
-    <div class="card"><div class="card-body"><div class="alert alert-info">No products found. <a href="add.php">Add your first product &rarr;</a></div></div></div>
+    <div class="card"><div class="card-body"><div class="alert alert-info">No products found. <a href="add.php">Add your first product <?php echo icon('chevron-right', 13); ?></a></div></div></div>
 
 <?php elseif ($view === 'table'): ?>
 
@@ -63,16 +63,16 @@ require_once '../../includes/layout.php';
                 <tbody>
                     <?php foreach ($products as $prod):
                         $stock = (int)($prod['current_stock'] ?? 0);
-                        $min   = (int)($prod['minimum_stock'] ?? 0);
+                        $min = (int)($prod['minimum_stock'] ?? 0);
                         $isLow = $stock <= $min;
                     ?>
                     <tr>
                         <td style="width:54px;">
                             <?php if (!empty($prod['image_url'])): ?>
                                 <img src="<?php echo htmlspecialchars($prod['image_url']); ?>" alt="" class="product-thumb" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="product-thumb-fallback" style="display:none;">📦</div>
+                                <div class="product-thumb-fallback" style="display:none;"></div>
                             <?php else: ?>
-                                <div class="product-thumb-fallback">📦</div>
+                                <div class="product-thumb-fallback"></div>
                             <?php endif; ?>
                         </td>
                         <td><span class="fw-600"><?php echo htmlspecialchars($prod['product_name']); ?></span></td>
@@ -103,7 +103,7 @@ require_once '../../includes/layout.php';
     <details class="product-group" open>
         <summary class="group-header">
             <span class="group-header-left">
-                <span class="group-icon">🗂️</span>
+                <span class="group-icon"><?php echo icon('tag', 15); ?></span>
                 <span class="group-title"><?php echo htmlspecialchars($catName); ?></span>
                 <span class="group-meta"><?php echo count($catProducts); ?> products &middot; <?php echo number_format($catItemCount); ?> items</span>
             </span>
@@ -113,7 +113,7 @@ require_once '../../includes/layout.php';
         <div class="product-grid">
             <?php foreach ($catProducts as $prod):
                 $stock = (int)($prod['current_stock'] ?? 0);
-                $min   = (int)($prod['minimum_stock'] ?? 0);
+                $min = (int)($prod['minimum_stock'] ?? 0);
                 $isLow = $stock <= $min;
             ?>
             <div class="product-card">
@@ -121,9 +121,9 @@ require_once '../../includes/layout.php';
                     <?php if ($isLow): ?><span class="low-stock-tag">Low Stock</span><?php endif; ?>
                     <?php if (!empty($prod['image_url'])): ?>
                         <img src="<?php echo htmlspecialchars($prod['image_url']); ?>" alt="<?php echo htmlspecialchars($prod['product_name']); ?>" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="product-card-fallback" style="display:none;">📦</div>
+                        <div class="product-card-fallback" style="display:none;"></div>
                     <?php else: ?>
-                        <div class="product-card-fallback">📦</div>
+                        <div class="product-card-fallback"></div>
                     <?php endif; ?>
                 </div>
                 <div class="product-card-body">

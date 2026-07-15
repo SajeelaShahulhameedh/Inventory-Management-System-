@@ -20,7 +20,7 @@ require_once '../../includes/layout.php';
 </div>
 
 <?php if (empty($categories)): ?>
-    <div class="card"><div class="card-body"><div class="alert alert-info">No categories found. <a href="add.php">Create one &rarr;</a></div></div></div>
+    <div class="card"><div class="card-body"><div class="alert alert-info">No categories found. <a href="add.php">Create one <?php echo icon('chevron-right', 13); ?></a></div></div></div>
 <?php else: ?>
     <div class="card">
         <div class="card-body">

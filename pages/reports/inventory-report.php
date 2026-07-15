@@ -2,9 +2,9 @@
 require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 
-$inventory    = new Inventory($conn);
+$inventory = new Inventory($conn);
 $allInventory = $inventory->getAllInventory();
-$totalValue   = 0; $totalUnits = 0;
+$totalValue = 0; $totalUnits = 0;
 if ($allInventory) foreach ($allInventory as $i) { $totalValue += $i['current_stock'] * $i['unit_price']; $totalUnits += $i['current_stock']; }
 
 $pageTitle = 'Inventory Report'; $pageSubtitle = 'Generated on ' . date('d M Y');
@@ -14,24 +14,24 @@ require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header no-print">
-    <div><h1>📊 Inventory Stock Report</h1><p>Generated: <?php echo date('d F Y, g:i A'); ?></p></div>
+    <div><h1>Inventory Stock Report</h1><p>Generated: <?php echo date('d F Y, g:i A'); ?></p></div>
     <div style="display:flex;gap:10px;">
-        <button onclick="window.print()" class="btn btn-primary no-print">🖨️ Print</button>
-        <a href="index.php" class="btn btn-secondary no-print">← Back</a>
+        <button onclick="window.print()" class="btn btn-primary no-print"><?php echo icon('printer', 15); ?> Print</button>
+        <a href="index.php" class="btn btn-secondary no-print"><?php echo icon('arrow-left', 15); ?> Back</a>
     </div>
 </div>
 
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon blue">📦</div>
+        <div class="stat-icon blue"><?php echo icon('box', 22); ?></div>
         <div class="stat-info"><div class="stat-label">Total Products</div><div class="stat-number"><?php echo $allInventory ? count($allInventory) : 0; ?></div></div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green">📋</div>
+        <div class="stat-icon green"><?php echo icon('building', 22); ?></div>
         <div class="stat-info"><div class="stat-label">Total Units</div><div class="stat-number"><?php echo number_format($totalUnits); ?></div></div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon yellow">💰</div>
+        <div class="stat-icon yellow"><?php echo icon('dollar', 22); ?></div>
         <div class="stat-info"><div class="stat-label">Total Value</div><div class="stat-number" style="font-size:18px;">Rs. <?php echo number_format($totalValue, 2); ?></div></div>
     </div>
 </div>

@@ -2,22 +2,22 @@
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
 
-$product    = new Product($conn);
+$product = new Product($conn);
 $product_id = $_GET['id'] ?? 0;
-$message    = '';
+$message = '';
 if ($product_id <= 0) { header("Location: list.php"); exit; }
 $productData = $product->getProductById($product_id);
 if (!$productData) { header("Location: list.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $product->product_id   = $product_id;
+    $product->product_id = $product_id;
     $product->product_name = $_POST['product_name'] ?? '';
     $product->product_code = $_POST['product_code'] ?? '';
-    $product->category_id  = $_POST['category_id'] ?? 0;
-    $product->supplier_id  = $_POST['supplier_id'] ?? 0;
-    $product->unit_price   = $_POST['unit_price'] ?? 0;
-    $product->description  = $_POST['description'] ?? '';
-    $product->image_url    = $_POST['image_url'] ?? '';
+    $product->category_id = $_POST['category_id'] ?? 0;
+    $product->supplier_id = $_POST['supplier_id'] ?? 0;
+    $product->unit_price = $_POST['unit_price'] ?? 0;
+    $product->description = $_POST['description'] ?? '';
+    $product->image_url = $_POST['image_url'] ?? '';
     if ($product->updateProduct()) {
         $message = '<div class="alert alert-success">Product updated successfully!</div>';
         $productData = $product->getProductById($product_id);
@@ -34,7 +34,7 @@ require_once '../../includes/layout.php';
 
 <div class="page-header">
     <div><h1>Edit Product</h1><p><?php echo htmlspecialchars($productData['product_name']); ?></p></div>
-    <a href="view.php?id=<?php echo $product_id; ?>" class="btn btn-secondary">← Back</a>
+    <a href="view.php?id=<?php echo $product_id; ?>" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
 </div>
 
 <?php echo $message; ?>

@@ -2,25 +2,25 @@
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
-$supplier   = new Supplier($conn);
+$supplier = new Supplier($conn);
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$suppliers  = !empty($searchTerm) ? $supplier->searchSuppliers($searchTerm) : $supplier->getAllSuppliers();
+$suppliers = !empty($searchTerm) ? $supplier->searchSuppliers($searchTerm) : $supplier->getAllSuppliers();
 
-$pageTitle    = 'Suppliers';
+$pageTitle = 'Suppliers';
 $pageSubtitle = 'Manage your supplier list';
-$activeMenu   = 'suppliers';
-$cssPath      = '../../assets/css/style.css';
-$jsPath       = '../../assets/js/script.js';
-$basePath     = '../../';
+$activeMenu = 'suppliers';
+$cssPath = '../../assets/css/style.css';
+$jsPath = '../../assets/js/script.js';
+$basePath = '../../';
 require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header">
     <div>
-        <h1>🏢 Suppliers</h1>
+        <h1>Suppliers</h1>
         <p><?php echo $suppliers ? count($suppliers) : 0; ?> supplier(s) found</p>
     </div>
-    <a href="add.php" class="btn btn-primary">➕ Add Supplier</a>
+    <a href="add.php" class="btn btn-primary"><?php echo icon('plus', 15); ?> Add Supplier</a>
 </div>
 
 <div class="card">
@@ -57,7 +57,7 @@ require_once '../../includes/layout.php';
         </table>
         <?php else: ?>
         <div class="card-body">
-            <div class="alert alert-info">No suppliers found. <a href="add.php">Add your first supplier →</a></div>
+            <div class="alert alert-info">No suppliers found. <a href="add.php">Add your first supplier <?php echo icon('chevron-right', 13); ?></a></div>
         </div>
         <?php endif; ?>
     </div>

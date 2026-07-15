@@ -2,23 +2,23 @@
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
-$supplier    = new Supplier($conn);
+$supplier = new Supplier($conn);
 $supplier_id = $_GET['id'] ?? 0;
-$message     = '';
+$message = '';
 if ($supplier_id <= 0) { header("Location: list.php"); exit; }
 $supplierData = $supplier->getSupplierById($supplier_id);
 if (!$supplierData) { header("Location: list.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $supplier->supplier_id    = $supplier_id;
-    $supplier->supplier_name  = $_POST['supplier_name'] ?? '';
+    $supplier->supplier_id = $supplier_id;
+    $supplier->supplier_name = $_POST['supplier_name'] ?? '';
     $supplier->contact_person = $_POST['contact_person'] ?? '';
-    $supplier->email          = $_POST['email'] ?? '';
-    $supplier->phone          = $_POST['phone'] ?? '';
-    $supplier->address        = $_POST['address'] ?? '';
-    $supplier->city           = $_POST['city'] ?? '';
-    $supplier->state          = $_POST['state'] ?? '';
-    $supplier->zip_code       = $_POST['zip_code'] ?? '';
+    $supplier->email = $_POST['email'] ?? '';
+    $supplier->phone = $_POST['phone'] ?? '';
+    $supplier->address = $_POST['address'] ?? '';
+    $supplier->city = $_POST['city'] ?? '';
+    $supplier->state = $_POST['state'] ?? '';
+    $supplier->zip_code = $_POST['zip_code'] ?? '';
     if ($supplier->updateSupplier()) {
         $message = '<div class="alert alert-success">Supplier updated successfully!</div>';
         $supplierData = $supplier->getSupplierById($supplier_id);
@@ -35,7 +35,7 @@ require_once '../../includes/layout.php';
 
 <div class="page-header">
     <div><h1>Edit Supplier</h1><p><?php echo htmlspecialchars($supplierData['supplier_name']); ?></p></div>
-    <a href="view.php?id=<?php echo $supplier_id; ?>" class="btn btn-secondary">← Back</a>
+    <a href="view.php?id=<?php echo $supplier_id; ?>" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
 </div>
 
 <?php echo $message; ?>
