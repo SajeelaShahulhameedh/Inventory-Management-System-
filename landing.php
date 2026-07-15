@@ -89,17 +89,10 @@ img{display:block;max-width:100%;}
 .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .feature-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:30px 26px;transition:transform .2s,box-shadow .2s;}
 .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(22,26,35,0.09);}
-<<<<<<< HEAD
 .f-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
 .f-icon.copper{background:var(--copper-light);color:var(--copper-dark);}
 .f-icon.teal{background:var(--teal-light);color:var(--teal);}
 .f-icon.paper{background:var(--paper-2);color:var(--ink);}
-=======
-.f-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:20px;}
-.f-icon.copper{background:var(--copper-light);}
-.f-icon.teal{background:var(--teal-light);}
-.f-icon.paper{background:var(--paper-2);}
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
 .feature-card h3{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:10px;}
 .feature-card p{font-size:14px;color:var(--muted);line-height:1.65;}
 
@@ -144,17 +137,10 @@ img{display:block;max-width:100%;}
 .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .contact-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:26px;}
 .contact-card-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-<<<<<<< HEAD
 .contact-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .contact-icon.c1{background:var(--teal-light);color:var(--teal);}
 .contact-icon.c2{background:var(--copper-light);color:var(--copper-dark);}
 .contact-icon.c3{background:var(--paper-2);color:var(--ink);}
-=======
-.contact-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;}
-.contact-icon.c1{background:var(--teal-light);}
-.contact-icon.c2{background:var(--copper-light);}
-.contact-icon.c3{background:var(--paper-2);}
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
 .contact-card-head .label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);}
 .contact-card-head h4{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ink);margin-top:3px;}
 .contact-card p{font-size:13.5px;color:var(--text);line-height:1.9;}
@@ -173,11 +159,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
 .footer-col a{display:block;font-size:13.5px;color:#94A3B8;margin-bottom:11px;transition:.18s;}
 .footer-col a:hover{color:#fff;}
 .footer-contact-row{display:flex;align-items:center;gap:9px;font-size:13px;color:#94A3B8;margin-bottom:11px;}
-<<<<<<< HEAD
 .footer-contact-row .ico{display:inline-flex;color:var(--copper);}
-=======
-.footer-contact-row .ico{font-size:14px;color:var(--copper);}
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
 .footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .footer-bottom p{font-size:12px;color:#475569;}
 .footer-badge{background:var(--copper);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
@@ -231,19 +213,11 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
 <!-- HERO -->
 <header class="hero">
   <div>
-<<<<<<< HEAD
     <div class="hero-eyebrow">Built for modern inventory teams</div>
     <h1>Smart Inventory,<br>Zero <span class="accent">Guesswork.</span></h1>
     <p>Track every product, supplier, and stock movement in one place — so restocking is always a decision you make on purpose.</p>
     <div class="hero-actions">
       <a href="index.php" class="btn btn-copper btn-lg">Open Dashboard </a>
-=======
-    <div class="hero-eyebrow"> Built for modern inventory teams</div>
-    <h1>Smart Inventory,<br>Zero <span class="accent">Guesswork.</span></h1>
-    <p>Track every product, supplier, and stock movement in one place — so restocking is always a decision you make on purpose.</p>
-    <div class="hero-actions">
-      <a href="index.php" class="btn btn-copper btn-lg">Open Dashboard →</a>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
       <a href="#how" class="btn btn-ghost-white btn-lg">How It Works</a>
     </div>
   </div>
@@ -259,56 +233,32 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
     </div>
     <div class="feature-grid">
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon copper"><?php echo icon('box', 22); ?></div>
-=======
-        <div class="f-icon copper"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Product Catalog</h3>
         <p>Add, edit, and organize products by category and supplier, with built-in validation so bad data never reaches the database.</p>
       </div>
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon teal"><?php echo icon('repeat', 22); ?></div>
-=======
-        <div class="f-icon teal"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Live Stock Tracking</h3>
         <p>Log every stock-in and stock-out movement. Current quantities recalculate automatically on every transaction.</p>
       </div>
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon paper"><?php echo icon('alert-triangle', 22); ?></div>
-=======
-        <div class="f-icon paper"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Low Stock Alerts</h3>
         <p>Set a minimum threshold per product and get a clear, prioritized alert list the moment stock dips below it.</p>
       </div>
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon teal"><?php echo icon('building', 22); ?></div>
-=======
-        <div class="f-icon teal"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Supplier Management</h3>
         <p>Keep contact details and supply history for every supplier tied directly to the products they provide.</p>
       </div>
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon copper"><?php echo icon('bar-chart', 22); ?></div>
-=======
-        <div class="f-icon copper"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Reports & Valuation</h3>
         <p>See total inventory value, stock health, and movement trends at a glance — no spreadsheet exports required.</p>
       </div>
       <div class="feature-card">
-<<<<<<< HEAD
         <div class="f-icon paper"><?php echo icon('code', 22); ?></div>
-=======
-        <div class="f-icon paper"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
         <h3>Reliable by Design</h3>
         <p>Built on a clean PHP/MySQL OOP structure, so every action — add, edit, delete — is validated and predictable.</p>
       </div>
@@ -325,7 +275,6 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
         <h2>Complete Inventory Control</h2>
         <p>Our system covers the full lifecycle of every product — from the moment it's added to the moment it needs restocking.</p>
         <div class="checklist">
-<<<<<<< HEAD
           <div class="check-item"><div class="check-dot"></div>Product catalog management</div>
           <div class="check-item"><div class="check-dot"></div>Stock transaction logs</div>
           <div class="check-item"><div class="check-dot"></div>Low stock alert dashboard</div>
@@ -334,16 +283,6 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
           <div class="check-item"><div class="check-dot"></div>Category-grouped product view</div>
         </div>
         <a href="index.php" class="link-more">Explore the Dashboard </a>
-=======
-          <div class="check-item"><div class="check-dot">✓</div>Product catalog management</div>
-          <div class="check-item"><div class="check-dot">✓</div>Stock transaction logs</div>
-          <div class="check-item"><div class="check-dot">✓</div>Low stock alert dashboard</div>
-          <div class="check-item"><div class="check-dot">✓</div>Supplier records</div>
-          <div class="check-item"><div class="check-dot">✓</div>Inventory value reports</div>
-          <div class="check-item"><div class="check-dot">✓</div>Category-grouped product view</div>
-        </div>
-        <a href="index.php" class="link-more">Explore the Dashboard →</a>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
       </div>
       <div class="stats-card">
         <h3>Trusted by Teams Who Count</h3>
@@ -359,11 +298,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
           <div class="num">0</div>
           <div class="lbl">Spreadsheets needed</div>
         </div>
-<<<<<<< HEAD
         <a href="index.php" class="btn btn-outline" style="background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.18);">Open Dashboard </a>
-=======
-        <a href="index.php" class="btn btn-outline" style="background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.18);">Open Dashboard →</a>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
       </div>
     </div>
   </div>
@@ -410,11 +345,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
       </div>
     </div>
     <div class="how-cta">
-<<<<<<< HEAD
       <a href="index.php" class="btn btn-copper btn-lg">Get Started </a>
-=======
-      <a href="index.php" class="btn btn-copper btn-lg">Get Started →</a>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
     </div>
   </div>
 </section>
@@ -425,11 +356,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
     <div class="contact-grid">
       <div class="contact-card">
         <div class="contact-card-head">
-<<<<<<< HEAD
           <div class="contact-icon c1"><?php echo icon('clock', 18); ?></div>
-=======
-          <div class="contact-icon c1"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
           <div>
             <div class="label">System Access</div>
             <h4>Availability</h4>
@@ -443,11 +370,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
       </div>
       <div class="contact-card">
         <div class="contact-card-head">
-<<<<<<< HEAD
           <div class="contact-icon c2"><?php echo icon('code', 18); ?></div>
-=======
-          <div class="contact-icon c2"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
           <div>
             <div class="label">Technology</div>
             <h4>Built With</h4>
@@ -461,11 +384,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
       </div>
       <div class="contact-card">
         <div class="contact-card-head">
-<<<<<<< HEAD
           <div class="contact-icon c3"><?php echo icon('info', 18); ?></div>
-=======
-          <div class="contact-icon c3"></div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
           <div>
             <div class="label">Project Info</div>
             <h4>About InvenTrack</h4>
@@ -515,17 +434,10 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
       </div>
       <div class="footer-col">
         <h5>Project</h5>
-<<<<<<< HEAD
         <div class="footer-contact-row"><span class="ico"><?php echo icon('tag', 13); ?></span> CST 226-2</div>
         <div class="footer-contact-row"><span class="ico"><?php echo icon('users', 13); ?></span> Group Project</div>
         <div class="footer-contact-row"><span class="ico"><?php echo icon('hash', 13); ?></span> Group 03</div>
         <div class="footer-contact-row"><span class="ico"><?php echo icon('building', 13); ?></span> uva wellassa university of srilanka</div>
-=======
-        <div class="footer-contact-row"><span class="ico"></span> CST 226-2</div>
-        <div class="footer-contact-row"><span class="ico"></span> Group Project</div>
-        <div class="footer-contact-row"><span class="ico"></span> Group 03 </div>
-        <div class="footer-contact-row"><span class="ico"></span> uva wellassa university of srilanka</div>
->>>>>>> 85eaab2f412753e16db90b8e180433ff0d01ca8b
       </div>
     </div>
     <div class="footer-bottom">
