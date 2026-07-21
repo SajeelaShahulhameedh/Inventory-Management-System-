@@ -2,7 +2,7 @@
 require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 
-$inventory     = new Inventory($conn);
+$inventory = new Inventory($conn);
 $lowStockItems = $inventory->getLowStockItems();
 
 $pageTitle = 'Low Stock Alert'; $pageSubtitle = 'Items below minimum stock level';
@@ -12,15 +12,15 @@ require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header">
-    <div><h1>⚠️ Low Stock Alert</h1><p><?php echo $lowStockItems ? count($lowStockItems) : 0; ?> item(s) need restocking</p></div>
+    <div><h1>Low Stock Alert</h1><p><?php echo $lowStockItems ? count($lowStockItems) : 0; ?> item(s) need restocking</p></div>
     <div style="display:flex;gap:10px;">
-        <a href="add-transaction.php" class="btn btn-primary">➕ Add Stock</a>
-        <a href="list.php" class="btn btn-secondary">← All Inventory</a>
+        <a href="add-transaction.php" class="btn btn-primary"><?php echo icon('plus', 15); ?> Add Stock</a>
+        <a href="list.php" class="btn btn-secondary"><?php echo icon('layers', 15); ?> All Inventory</a>
     </div>
 </div>
 
 <?php if ($lowStockItems): ?>
-<div class="alert alert-warning">⚠️ The following products are running low. Please restock them as soon as possible.</div>
+<div class="alert alert-warning"><?php echo icon('alert-circle', 16); ?> The following products are running low. Please restock them as soon as possible.</div>
 <div class="card">
     <div class="table-responsive">
         <table>
@@ -28,7 +28,7 @@ require_once '../../includes/layout.php';
             <tbody>
                 <?php foreach ($lowStockItems as $item):
                     $needed = $item['minimum_stock'] - $item['current_stock'];
-                    $isOut  = $item['current_stock'] <= 0;
+                    $isOut = $item['current_stock'] <= 0;
                 ?>
                 <tr>
                     <td><span class="fw-600"><?php echo htmlspecialchars($item['product_name']); ?></span></td>
@@ -46,7 +46,7 @@ require_once '../../includes/layout.php';
     </div>
 </div>
 <?php else: ?>
-<div class="alert alert-success">✅ All stock levels are healthy! No items below minimum.</div>
+<div class="alert alert-success"><?php echo icon('check-circle', 16); ?> All stock levels are healthy! No items below minimum.</div>
 <?php endif; ?>
 
 <?php require_once '../../includes/layout-end.php'; ?>

@@ -2,15 +2,15 @@
 require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 
-$inventory    = new Inventory($conn);
+$inventory = new Inventory($conn);
 $inventory_id = $_GET['id'] ?? 0;
-$message      = '';
+$message = '';
 if ($inventory_id <= 0) { header("Location: list.php"); exit; }
 $inventoryData = $inventory->getInventoryById($inventory_id);
 if (!$inventoryData) { header("Location: list.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $inventory->inventory_id  = $inventory_id;
+    $inventory->inventory_id = $inventory_id;
     $inventory->current_stock = $_POST['current_stock'] ?? 0;
     $inventory->minimum_stock = $_POST['minimum_stock'] ?? 0;
     $inventory->maximum_stock = $_POST['maximum_stock'] ?? 0;
@@ -30,7 +30,7 @@ require_once '../../includes/layout.php';
 
 <div class="page-header">
     <div><h1>Edit Inventory</h1><p><?php echo htmlspecialchars($inventoryData['product_name']); ?></p></div>
-    <a href="list.php" class="btn btn-secondary">← Back to Inventory</a>
+    <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back to Inventory</a>
 </div>
 
 <?php echo $message; ?>

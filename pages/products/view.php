@@ -2,7 +2,7 @@
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
 
-$product    = new Product($conn);
+$product = new Product($conn);
 $product_id = $_GET['id'] ?? 0;
 if ($product_id <= 0) { header("Location: list.php"); exit; }
 $productData = $product->getProductById($product_id);
@@ -22,7 +22,7 @@ require_once '../../includes/layout.php';
     </div>
     <div style="display:flex;gap:10px;">
         <a href="edit.php?id=<?php echo $productData['product_id']; ?>" class="btn btn-warning">Edit</a>
-        <a href="list.php" class="btn btn-secondary">← Back</a>
+        <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
     </div>
 </div>
 
@@ -32,9 +32,9 @@ require_once '../../includes/layout.php';
         <div class="card-body" style="padding:0;">
             <?php if (!empty($productData['image_url'])): ?>
                 <img src="<?php echo htmlspecialchars($productData['image_url']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="product-photo-fallback" style="display:none;">📦</div>
+                <div class="product-photo-fallback" style="display:none;"></div>
             <?php else: ?>
-                <div class="product-photo-fallback">📦</div>
+                <div class="product-photo-fallback"></div>
             <?php endif; ?>
         </div>
     </div>

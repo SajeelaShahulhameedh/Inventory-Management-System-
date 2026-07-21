@@ -6,14 +6,14 @@ $supplier = new Supplier($conn);
 $message = ''; $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $supplier->supplier_name  = trim($_POST['supplier_name']);
+    $supplier->supplier_name = trim($_POST['supplier_name']);
     $supplier->contact_person = trim($_POST['contact_person']);
-    $supplier->email          = trim($_POST['email']);
-    $supplier->phone          = trim($_POST['phone']);
-    $supplier->address        = trim($_POST['address']);
-    $supplier->city           = trim($_POST['city']);
-    $supplier->state          = trim($_POST['state']);
-    $supplier->zip_code       = trim($_POST['zip_code']);
+    $supplier->email = trim($_POST['email']);
+    $supplier->phone = trim($_POST['phone']);
+    $supplier->address = trim($_POST['address']);
+    $supplier->city = trim($_POST['city']);
+    $supplier->state = trim($_POST['state']);
+    $supplier->zip_code = trim($_POST['zip_code']);
 
     if (empty($supplier->supplier_name)) {
         $message = 'Supplier name is required.'; $messageType = 'danger';
@@ -33,14 +33,14 @@ require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header">
-    <div><h1>➕ Add New Supplier</h1><p>Fill in the details below</p></div>
-    <a href="list.php" class="btn btn-secondary">← Back to Suppliers</a>
+    <div><h1>Add New Supplier</h1><p>Fill in the details below</p></div>
+    <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back to Suppliers</a>
 </div>
 
 <?php if (!empty($message)): ?>
 <div class="alert alert-<?php echo $messageType; ?>">
     <?php echo $message; ?>
-    <?php if ($messageType === 'success'): ?><a href="list.php" style="margin-left:10px;">View All →</a><?php endif; ?>
+    <?php if ($messageType === 'success'): ?><a href="list.php" style="margin-left:10px;">View All </a><?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -87,7 +87,7 @@ require_once '../../includes/layout.php';
                 <input type="text" name="zip_code" value="<?php echo htmlspecialchars($supplier->zip_code ?? ''); ?>" placeholder="ZIP code">
             </div>
             <div style="display:flex; gap:10px; margin-top:8px;">
-                <button type="submit" class="btn btn-primary">💾 Save Supplier</button>
+                <button type="submit" class="btn btn-primary"><?php echo icon('save', 15); ?> Save Supplier</button>
                 <a href="list.php" class="btn btn-secondary">Cancel</a>
             </div>
         </form>

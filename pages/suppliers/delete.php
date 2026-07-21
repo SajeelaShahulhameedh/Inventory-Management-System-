@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
 <body>
     <!-- HEADER -->
     <header>
-        <h1>📦 Inventory Management System</h1>
+        <h1>Inventory Management System</h1>
     </header>
 
     <!-- NAVIGATION -->
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
         <div class="content">
             <!-- WARNING ALERT -->
             <div class="alert alert-danger">
-                <strong>⚠️ Warning!</strong> You are about to delete a supplier. This action cannot be undone.
+                <strong> Warning!</strong> You are about to delete a supplier. This action cannot be undone.
             </div>
 
             <!-- SUPPLIER INFO -->

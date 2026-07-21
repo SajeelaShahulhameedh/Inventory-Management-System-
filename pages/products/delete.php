@@ -60,7 +60,7 @@ require_once '../../includes/layout.php';
         <h1>Delete Product</h1>
         <p>Are you sure you want to remove this product permanently?</p>
     </div>
-    <a href="view.php?id=<?php echo $product_id; ?>" class="btn btn-secondary">← Back</a>
+    <a href="view.php?id=<?php echo $product_id; ?>" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
 </div>
 
 <?php if ($errorMsg): ?>

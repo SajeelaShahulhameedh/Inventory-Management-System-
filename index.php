@@ -4,17 +4,17 @@ require_once 'classes/Product.php';
 require_once 'classes/Inventory.php';
 require_once 'classes/Supplier.php';
 
-$product   = new Product($conn);
+$product = new Product($conn);
 $inventory = new Inventory($conn);
-$supplier  = new Supplier($conn);
+$supplier = new Supplier($conn);
 
-$allProducts      = $product->getAllProducts();
-$totalProducts    = $allProducts ? count($allProducts) : 0;
-$allInventory     = $inventory->getAllInventory();
-$lowStockItems    = $inventory->getLowStockItems();
-$lowStockCount    = $lowStockItems ? count($lowStockItems) : 0;
-$allSuppliers     = $supplier->getAllSuppliers();
-$totalSuppliers   = $allSuppliers ? count($allSuppliers) : 0;
+$allProducts = $product->getAllProducts();
+$totalProducts = $allProducts ? count($allProducts) : 0;
+$allInventory = $inventory->getAllInventory();
+$lowStockItems = $inventory->getLowStockItems();
+$lowStockCount = $lowStockItems ? count($lowStockItems) : 0;
+$allSuppliers = $supplier->getAllSuppliers();
+$totalSuppliers = $allSuppliers ? count($allSuppliers) : 0;
 
 $totalInventoryValue = 0;
 if ($allInventory) {
@@ -22,47 +22,47 @@ if ($allInventory) {
         $totalInventoryValue += ($item['current_stock'] * $item['unit_price']);
 }
 
-$pageTitle    = 'Dashboard';
+$pageTitle = 'Dashboard';
 $pageSubtitle = 'Welcome back! Here is your inventory overview.';
-$activeMenu   = 'dashboard';
-$cssPath      = 'assets/css/style.css';
-$jsPath       = 'assets/js/script.js';
-$basePath     = '';
+$activeMenu = 'dashboard';
+$cssPath = 'assets/css/style.css';
+$jsPath = 'assets/js/script.js';
+$basePath = '';
 require_once 'includes/layout.php';
 ?>
 
 <!-- STAT CARDS -->
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon blue">📦</div>
+        <div class="stat-icon blue"><?php echo icon('box', 22); ?></div>
         <div class="stat-info">
             <div class="stat-label">Total Products</div>
             <div class="stat-number"><?php echo $totalProducts; ?></div>
-            <a href="pages/products/list.php" class="stat-link">View all →</a>
+            <a href="pages/products/list.php" class="stat-link">View all <?php echo icon('chevron-right', 13); ?></a>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green">🏢</div>
+        <div class="stat-icon green"><?php echo icon('building', 22); ?></div>
         <div class="stat-info">
             <div class="stat-label">Total Suppliers</div>
             <div class="stat-number"><?php echo $totalSuppliers; ?></div>
-            <a href="pages/suppliers/list.php" class="stat-link">View all →</a>
+            <a href="pages/suppliers/list.php" class="stat-link">View all <?php echo icon('chevron-right', 13); ?></a>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon red">⚠️</div>
+        <div class="stat-icon red"><?php echo icon('alert-triangle', 22); ?></div>
         <div class="stat-info">
             <div class="stat-label">Low Stock Items</div>
             <div class="stat-number"><?php echo $lowStockCount; ?></div>
-            <a href="pages/inventory/low-stock.php" class="stat-link">View alerts →</a>
+            <a href="pages/inventory/low-stock.php" class="stat-link">View alerts <?php echo icon('chevron-right', 13); ?></a>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon yellow">💰</div>
+        <div class="stat-icon yellow"><?php echo icon('dollar', 22); ?></div>
         <div class="stat-info">
             <div class="stat-label">Inventory Value</div>
             <div class="stat-number" style="font-size:20px;">Rs. <?php echo number_format($totalInventoryValue, 0); ?></div>
-            <a href="pages/reports/inventory-report.php" class="stat-link">Full report →</a>
+            <a href="pages/reports/inventory-report.php" class="stat-link">Full report <?php echo icon('chevron-right', 13); ?></a>
         </div>
     </div>
 </div>
@@ -70,19 +70,19 @@ require_once 'includes/layout.php';
 <!-- QUICK ACTIONS -->
 <div class="action-grid">
     <a href="pages/products/add.php" class="action-card">
-        <div class="action-icon">➕</div>
+        <div class="action-icon"><?php echo icon('plus', 24); ?></div>
         <div class="action-label">Add Product</div>
     </a>
     <a href="pages/suppliers/add.php" class="action-card">
-        <div class="action-icon">🏢</div>
+        <div class="action-icon"><?php echo icon('building', 24); ?></div>
         <div class="action-label">Add Supplier</div>
     </a>
     <a href="pages/inventory/add-transaction.php" class="action-card">
-        <div class="action-icon">🔄</div>
+        <div class="action-icon"><?php echo icon('repeat', 24); ?></div>
         <div class="action-label">Stock Transaction</div>
     </a>
     <a href="pages/reports/inventory-report.php" class="action-card">
-        <div class="action-icon">📊</div>
+        <div class="action-icon"><?php echo icon('bar-chart', 24); ?></div>
         <div class="action-label">Generate Report</div>
     </a>
 </div>
@@ -94,7 +94,7 @@ require_once 'includes/layout.php';
         <div class="value">Rs. <?php echo number_format($totalInventoryValue, 2); ?></div>
         <p>Based on current stock levels × unit prices</p>
     </div>
-    <div style="font-size: 48px; opacity: 0.3;">💰</div>
+    <div style="opacity: 0.35;"><?php echo icon('dollar', 48); ?></div>
 </div>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
@@ -102,7 +102,7 @@ require_once 'includes/layout.php';
 <!-- LOW STOCK TABLE -->
 <div class="card">
     <div class="card-header">
-        <h3>⚠️ Low Stock Items</h3>
+        <h3>Low Stock Items</h3>
         <a href="pages/inventory/low-stock.php" class="btn btn-sm btn-danger">View All</a>
     </div>
     <?php if ($lowStockItems): ?>
@@ -122,14 +122,14 @@ require_once 'includes/layout.php';
         </table>
     </div>
     <?php else: ?>
-    <div class="card-body"><div class="alert alert-success">✅ All stock levels are healthy!</div></div>
+    <div class="card-body"><div class="alert alert-success"><?php echo icon('check-circle', 16); ?> All stock levels are healthy!</div></div>
     <?php endif; ?>
 </div>
 
 <!-- RECENT PRODUCTS TABLE -->
 <div class="card">
     <div class="card-header">
-        <h3>📦 Recent Products</h3>
+        <h3>Recent Products</h3>
         <a href="pages/products/list.php" class="btn btn-sm btn-outline">View All</a>
     </div>
     <?php if ($allProducts): ?>

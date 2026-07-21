@@ -2,8 +2,8 @@
 require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 
-$inventory     = new Inventory($conn);
-$allInventory  = $inventory->getAllInventory();
+$inventory = new Inventory($conn);
+$allInventory = $inventory->getAllInventory();
 $lowStockItems = $inventory->getLowStockItems();
 $lowStockCount = $lowStockItems ? count($lowStockItems) : 0;
 
@@ -14,11 +14,11 @@ require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header">
-    <div><h1>🗂️ Stock Levels</h1><p>Monitor all product stock quantities</p></div>
+    <div><h1>Stock Levels</h1><p>Monitor all product stock quantities</p></div>
     <div style="display:flex;gap:10px;">
-        <a href="add-transaction.php" class="btn btn-primary">➕ Stock Transaction</a>
+        <a href="add-transaction.php" class="btn btn-primary"><?php echo icon('repeat', 15); ?> Stock Transaction</a>
         <?php if ($lowStockCount > 0): ?>
-        <a href="low-stock.php" class="btn btn-danger">⚠️ Low Stock (<?php echo $lowStockCount; ?>)</a>
+        <a href="low-stock.php" class="btn btn-danger"><?php echo icon('alert-triangle', 15); ?> Low Stock (<?php echo $lowStockCount; ?>)</a>
         <?php endif; ?>
     </div>
 </div>
@@ -59,7 +59,7 @@ require_once '../../includes/layout.php';
             </tbody>
         </table>
         <?php else: ?>
-        <div class="card-body"><div class="alert alert-info">No inventory records. <a href="../products/add.php">Add a product first →</a></div></div>
+        <div class="card-body"><div class="alert alert-info">No inventory records. <a href="../products/add.php">Add a product first <?php echo icon('chevron-right', 13); ?></a></div></div>
         <?php endif; ?>
     </div>
 </div>
