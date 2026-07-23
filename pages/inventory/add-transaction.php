@@ -4,16 +4,16 @@ require_once '../../classes/Inventory.php';
 require_once '../../classes/Product.php';
 
 $inventory = new Inventory($conn);
-$product   = new Product($conn);
+$product = new Product($conn);
 $message = ''; $messageType = '';
 $preSelected = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
 $allProducts = $product->getAllProducts();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productId = (int)$_POST['product_id'];
-    $type      = $_POST['transaction_type'];
-    $quantity  = (int)$_POST['quantity'];
-    $notes     = trim($_POST['notes']);
+    $type = $_POST['transaction_type'];
+    $quantity = (int)$_POST['quantity'];
+    $notes = trim($_POST['notes']);
 
     if ($productId <= 0 || $quantity <= 0 || empty($type)) {
         $message = 'Please fill all required fields with valid values.'; $messageType = 'danger';
@@ -41,14 +41,14 @@ require_once '../../includes/layout.php';
 ?>
 
 <div class="page-header">
-    <div><h1>🔄 Stock Transaction</h1><p>Record stock movements for any product</p></div>
-    <a href="list.php" class="btn btn-secondary">← Back to Inventory</a>
+    <div><h1>Stock Transaction</h1><p>Record stock movements for any product</p></div>
+    <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back to Inventory</a>
 </div>
 
 <?php if (!empty($message)): ?>
 <div class="alert alert-<?php echo $messageType; ?>">
     <?php echo $message; ?>
-    <?php if ($messageType === 'success'): ?><a href="list.php" style="margin-left:10px;">View Inventory →</a><?php endif; ?>
+    <?php if ($messageType === 'success'): ?><a href="list.php" style="margin-left:10px;">View Inventory </a><?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -70,16 +70,16 @@ require_once '../../includes/layout.php';
                 </select>
             </div>
             <div id="stock-info" style="display:none;" class="alert alert-info">
-                📦 Current Stock: <strong id="stock-display">--</strong> units
+                <?php echo icon('box', 16); ?> Current Stock: <strong id="stock-display">--</strong> units
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Transaction Type <span class="text-danger">*</span></label>
                     <select name="transaction_type" required>
                         <option value="">-- Select --</option>
-                        <option value="IN">📥 IN — Add Stock</option>
-                        <option value="OUT">📤 OUT — Remove Stock</option>
-                        <option value="ADJUSTMENT">🔧 ADJUSTMENT</option>
+                        <option value="IN">IN — Add Stock</option>
+                        <option value="OUT">OUT — Remove Stock</option>
+                        <option value="ADJUSTMENT">ADJUSTMENT</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -92,7 +92,7 @@ require_once '../../includes/layout.php';
                 <textarea name="notes" placeholder="Optional notes about this transaction..."></textarea>
             </div>
             <div style="display:flex;gap:10px;">
-                <button type="submit" class="btn btn-primary">✅ Record Transaction</button>
+                <button type="submit" class="btn btn-primary"><?php echo icon('save', 15); ?> Record Transaction</button>
                 <a href="list.php" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
@@ -102,19 +102,19 @@ require_once '../../includes/layout.php';
 <div>
     <div class="card" style="margin-bottom:16px;">
         <div class="card-body" style="background:#f0fdf4; border-left:4px solid #10b981; border-radius:8px;">
-            <div class="fw-600" style="color:#065f46; margin-bottom:6px;">📥 IN — Add Stock</div>
+            <div class="fw-600" style="color:#065f46; margin-bottom:6px;"><?php echo icon('arrow-down-circle', 15); ?> IN — Add Stock</div>
             <p class="text-muted" style="font-size:13px; margin:0;">Increases current stock. Use when receiving goods from a supplier.</p>
         </div>
     </div>
     <div class="card" style="margin-bottom:16px;">
         <div class="card-body" style="background:#fef2f2; border-left:4px solid #ef4444; border-radius:8px;">
-            <div class="fw-600" style="color:#991b1b; margin-bottom:6px;">📤 OUT — Remove Stock</div>
+            <div class="fw-600" style="color:#991b1b; margin-bottom:6px;"><?php echo icon('arrow-up-circle', 15); ?> OUT — Remove Stock</div>
             <p class="text-muted" style="font-size:13px; margin:0;">Decreases current stock. Use when selling or consuming goods.</p>
         </div>
     </div>
     <div class="card">
         <div class="card-body" style="background:#eff6ff; border-left:4px solid #3b82f6; border-radius:8px;">
-            <div class="fw-600" style="color:#1e40af; margin-bottom:6px;">🔧 ADJUSTMENT — Set Exact Amount</div>
+            <div class="fw-600" style="color:#1e40af; margin-bottom:6px;"><?php echo icon('sliders', 15); ?> ADJUSTMENT — Set Exact Amount</div>
             <p class="text-muted" style="font-size:13px; margin:0;">Sets stock to exact value. Use after a manual stock count.</p>
         </div>
     </div>

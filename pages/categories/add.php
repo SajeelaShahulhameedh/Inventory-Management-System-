@@ -34,7 +34,7 @@ require_once '../../includes/layout.php';
 
 <div class="page-header">
   <div><h1>Add Category</h1><p>Create a new product category</p></div>
-  <a href="list.php" class="btn btn-secondary">← Back</a>
+  <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
 </div>
 
 <?php echo $message; ?>

@@ -11,7 +11,7 @@ class Category {
     }
 
     public function getAll() {
-        $query = "SELECT category_id, category_name, description FROM {$this->table} ORDER BY category_name ASC";
+        $query = "SELECT category_id, category_name, description, created_at FROM {$this->table} ORDER BY category_name ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $res = $stmt->get_result();

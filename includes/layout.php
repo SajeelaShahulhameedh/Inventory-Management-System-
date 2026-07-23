@@ -19,6 +19,8 @@ if (empty($_SESSION['csrf_token'])) {
     }
 }
 
+require_once __DIR__ . '/icons.php';
+
 // Resolve asset base path safely
 $assetBase = '';
 if (isset($basePath) && $basePath !== '') {
@@ -31,7 +33,7 @@ if (isset($basePath) && $basePath !== '') {
 
 // Allow pages to override full paths by setting $cssPath or $jsPath
 $resolvedCss = isset($cssPath) ? $cssPath : ($assetBase . 'assets/css/style.css');
-$resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js');
+$resolvedJs = isset($jsPath) ? $jsPath : ($assetBase . 'assets/js/script.js');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +48,7 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
 <!-- SIDEBAR -->
 <aside class="sidebar">
     <div class="sidebar-brand">
-        <h2>📦 InvenTrack</h2>
+        <h2><span class="sidebar-logo"><?php echo icon('box', 18); ?></span> InvenTrack</h2>
         <p>Inventory Management</p>
     </div>
 
@@ -56,7 +58,7 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>index.php"
                class="<?php echo ($activeMenu === 'dashboard') ? 'active' : ''; ?>">
-                <span class="menu-icon">🏠</span> Dashboard
+                <span class="menu-icon"><?php echo icon('home', 18); ?></span> Dashboard
             </a>
         </li>
 
@@ -65,28 +67,28 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/products/list.php"
                class="<?php echo ($activeMenu === 'products') ? 'active' : ''; ?>">
-                <span class="menu-icon">📦</span> Products
+                <span class="menu-icon"><?php echo icon('box', 18); ?></span> Products
             </a>
         </li>
 
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/inventory/list.php"
                class="<?php echo ($activeMenu === 'inventory') ? 'active' : ''; ?>">
-                <span class="menu-icon">🗂️</span> Stock Levels
+                <span class="menu-icon"><?php echo icon('layers', 18); ?></span> Stock Levels
             </a>
         </li>
 
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/inventory/add-transaction.php"
                class="<?php echo ($activeMenu === 'transaction') ? 'active' : ''; ?>">
-                <span class="menu-icon">🔄</span> Stock Transaction
+                <span class="menu-icon"><?php echo icon('repeat', 18); ?></span> Stock Transaction
             </a>
         </li>
 
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/inventory/low-stock.php"
                class="<?php echo ($activeMenu === 'lowstock') ? 'active' : ''; ?>">
-                <span class="menu-icon">⚠️</span> Low Stock Alert
+                <span class="menu-icon"><?php echo icon('alert-triangle', 18); ?></span> Low Stock Alert
             </a>
         </li>
 
@@ -95,21 +97,21 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/suppliers/list.php"
                class="<?php echo ($activeMenu === 'suppliers') ? 'active' : ''; ?>">
-                <span class="menu-icon">🏢</span> Suppliers
+                <span class="menu-icon"><?php echo icon('building', 18); ?></span> Suppliers
             </a>
         </li>
 
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/reports/index.php"
                class="<?php echo ($activeMenu === 'reports') ? 'active' : ''; ?>">
-                <span class="menu-icon">📊</span> Reports
+                <span class="menu-icon"><?php echo icon('bar-chart', 18); ?></span> Reports
             </a>
         </li>
 
         <li>
             <a href="<?php echo $basePath ?? '../'; ?>pages/categories/list.php"
                class="<?php echo ($activeMenu === 'categories') ? 'active' : ''; ?>">
-                <span class="menu-icon">🗂️</span> Categories
+                <span class="menu-icon"><?php echo icon('grid', 18); ?></span> Categories
             </a>
         </li>
     </ul>
@@ -129,7 +131,7 @@ $resolvedJs  = isset($jsPath)  ? $jsPath  : ($assetBase . 'assets/js/script.js')
             <div class="topbar-subtitle"><?php echo htmlspecialchars($pageSubtitle ?? 'Inventory Management System'); ?></div>
         </div>
         <div class="topbar-right">
-            <span class="topbar-date">📅 <?php echo date('D, d M Y'); ?></span>
+            <span class="topbar-date"><?php echo date('D, d M Y'); ?></span>
         </div>
     </div>
 

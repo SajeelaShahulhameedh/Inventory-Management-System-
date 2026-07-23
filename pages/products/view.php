@@ -1,12 +1,42 @@
 <?php
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
+require_once '../../includes/icons.php';
 
-$product    = new Product($conn);
+$product = new Product($conn);
 $product_id = $_GET['id'] ?? 0;
-if ($product_id <= 0) { header("Location: list.php"); exit; }
-$productData = $product->getProductById($product_id);
-if (!$productData) { header("Location: list.php"); exit; }
+$searchedCode = isset($_GET['code']) ? trim($_GET['code']) : '';
+
+if ($searchedCode !== '') {
+    $productData = $product->getProductByCode($searchedCode);
+} elseif ($product_id > 0) {
+    $productData = $product->getProductById($product_id);
+} else {
+    header("Location: list.php"); exit;
+}
+
+if (!$productData) {
+    // Show a friendly "not found" message instead of silently redirecting,
+    // so a mistyped product code is easy to understand and correct.
+    $pageTitle = 'Product Not Found'; $pageSubtitle = 'No product matches that code';
+    $activeMenu = 'products'; $cssPath = '../../assets/css/style.css';
+    $jsPath = '../../assets/js/script.js'; $basePath = '../../';
+    require_once '../../includes/layout.php';
+    ?>
+    <div class="page-header">
+        <div><h1>Product Not Found</h1><p>We couldn't find a product with that code.</p></div>
+        <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back to Products</a>
+    </div>
+    <div class="card"><div class="card-body">
+        <div class="alert alert-warning">
+            <?php echo icon('alert-circle', 16); ?>
+            No product found for code "<strong><?php echo htmlspecialchars($searchedCode ?: $product_id); ?></strong>". Please check the code and try again, or browse the full product list.
+        </div>
+    </div></div>
+    <?php
+    require_once '../../includes/layout-end.php';
+    exit;
+}
 
 $pageTitle = htmlspecialchars($productData['product_name']);
 $pageSubtitle = 'Product Code: ' . htmlspecialchars($productData['product_code']);
@@ -22,7 +52,7 @@ require_once '../../includes/layout.php';
     </div>
     <div style="display:flex;gap:10px;">
         <a href="edit.php?id=<?php echo $productData['product_id']; ?>" class="btn btn-warning">Edit</a>
-        <a href="list.php" class="btn btn-secondary">← Back</a>
+        <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
     </div>
 </div>
 
@@ -32,9 +62,9 @@ require_once '../../includes/layout.php';
         <div class="card-body" style="padding:0;">
             <?php if (!empty($productData['image_url'])): ?>
                 <img src="<?php echo htmlspecialchars($productData['image_url']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="product-photo-fallback" style="display:none;">📦</div>
+                <div class="product-photo-fallback" style="display:none;"></div>
             <?php else: ?>
-                <div class="product-photo-fallback">📦</div>
+                <div class="product-photo-fallback"></div>
             <?php endif; ?>
         </div>
     </div>

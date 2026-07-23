@@ -57,6 +57,32 @@ class Product {
     }
     
     /**
+     * GET PRODUCT BY CODE
+     * Retrieves a specific product using its exact product code (case-insensitive)
+     *
+     * @param string $code - Product code
+     * @return array - Product details or false if not found
+     */
+    public function getProductByCode($code) {
+        $query = "SELECT p.*, c.category_name, s.supplier_name 
+                  FROM " . $this->table . " p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  LEFT JOIN suppliers s ON p.supplier_id = s.supplier_id
+                  WHERE p.product_code = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('s', $code);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc();
+        }
+        return false;
+    }
+
+    /**
      * GET PRODUCT BY ID
      * Retrieves a specific product using its ID
      * 
@@ -83,6 +109,29 @@ class Product {
     }
     
     /**
+     * CHECK IF PRODUCT CODE EXISTS
+     * Used to validate uniqueness before insert/update.
+     *
+     * @param string $code - Product code to check
+     * @param int $excludeId - Product ID to exclude (used when editing, so a
+     *                         product's own unchanged code isn't flagged)
+     * @return bool - True if another product already uses this code
+     */
+    public function codeExists($code, $excludeId = 0) {
+        if ($excludeId > 0) {
+            $query = "SELECT product_id FROM " . $this->table . " WHERE product_code = ? AND product_id != ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('si', $code, $excludeId);
+        } else {
+            $query = "SELECT product_id FROM " . $this->table . " WHERE product_code = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('s', $code);
+        }
+        $stmt->execute();
+        return $stmt->get_result()->num_rows > 0;
+    }
+
+    /**
      * ADD NEW PRODUCT
      * Inserts a new product into the database
      * 
@@ -90,12 +139,7 @@ class Product {
      */
     public function addProduct() {
         // Check for duplicate product code
-        $query = "SELECT product_id FROM " . $this->table . " WHERE product_code = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('s', $this->product_code);
-        $stmt->execute();
-        
-        if ($stmt->get_result()->num_rows > 0) {
+        if ($this->codeExists($this->product_code)) {
             return false; // Product code already exists
         }
         

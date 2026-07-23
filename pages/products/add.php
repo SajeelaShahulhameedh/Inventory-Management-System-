@@ -4,17 +4,18 @@ require_once '../../classes/Product.php';
 require_once '../../classes/Inventory.php';
 require_once '../../classes/Category.php';
 require_once '../../classes/Supplier.php';
+require_once '../../includes/icons.php';
 
 if (session_status() === PHP_SESSION_NONE) session_start();
 
-$product   = new Product($conn);
+$product = new Product($conn);
 $inventory = new Inventory($conn);
 $categoryObj = new Category($conn);
 $supplierObj = new Supplier($conn);
 $categories = $categoryObj->getAll();
 $suppliers = $supplierObj->getAllSuppliers();
 
-$message   = '';
+$message = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // CSRF check
@@ -23,25 +24,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $product->product_name = trim($_POST['product_name'] ?? '');
         $product->product_code = trim($_POST['product_code'] ?? '');
-        $product->category_id  = (int)($_POST['category_id'] ?? 0);
-        $product->supplier_id  = (int)($_POST['supplier_id'] ?? 0);
-        $product->unit_price   = (float)($_POST['unit_price'] ?? 0);
-        $product->description  = trim($_POST['description'] ?? '');
-        $product->image_url    = trim($_POST['image_url'] ?? '');
+        $product->category_id = (int)($_POST['category_id'] ?? 0);
+        $product->supplier_id = (int)($_POST['supplier_id'] ?? 0);
+        $product->unit_price = (float)($_POST['unit_price'] ?? 0);
+        $product->description = trim($_POST['description'] ?? '');
+        $product->image_url = trim($_POST['image_url'] ?? '');
 
-        $initialStock  = max(0, (int)($_POST['current_stock'] ?? 0));
-        $minimumStock  = max(0, (int)($_POST['minimum_stock'] ?? 10));
-        $maximumStock  = max(0, (int)($_POST['maximum_stock'] ?? 100));
+        $initialStock = max(0, (int)($_POST['current_stock'] ?? 0));
+        $minimumStock = max(0, (int)($_POST['minimum_stock'] ?? 10));
+        $maximumStock = max(0, (int)($_POST['maximum_stock'] ?? 100));
 
         // Basic server-side validation
         if ($product->product_name === '' || $product->product_code === '' || $product->category_id <= 0 || $product->supplier_id <= 0) {
             $message = '<div class="alert alert-danger">Please fill required fields.</div>';
+        } elseif ($product->codeExists($product->product_code)) {
+            $message = '<div class="alert alert-danger">' . icon('alert-circle', 16) . ' Product code "' . htmlspecialchars($product->product_code) . '" is already in use. Please choose a different code.</div>';
         } else {
             if ($product->addProduct()) {
                 // Create the matching inventory record so stock shows up immediately
                 $inventory->createInventory($product->product_id, $initialStock, $minimumStock, $maximumStock);
 
-                $message = '<div class="alert alert-success">Product added successfully! <a href="list.php">View all products →</a></div>';
+                $message = '<div class="alert alert-success">Product added successfully! <a href="list.php">View all products </a></div>';
                 header("refresh:2;url=list.php");
             } else {
                 $message = '<div class="alert alert-danger">Error adding product. Please try again.</div>';
@@ -58,7 +61,7 @@ require_once '../../includes/layout.php';
 
 <div class="page-header">
     <div><h1>Add New Product</h1><p>Fill in the details below</p></div>
-    <a href="list.php" class="btn btn-secondary">← Back to Products</a>
+    <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back to Products</a>
 </div>
 
 <?php echo $message; ?>

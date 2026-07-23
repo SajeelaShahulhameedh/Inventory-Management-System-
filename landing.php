@@ -1,8 +1,10 @@
 <?php
 /**
  * LANDING PAGE - InvenTrack
- * Marketing entry point. Links through to the dashboard (index.php).
+ * Layout inspired by modern SaaS landing pages
+ * Theme: Ink & Copper
  */
+require_once __DIR__ . '/includes/icons.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,10 +17,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#161A23; --ink-2:#2B2118;
+  --ink:#161A23; --ink-2:#1D222C;
   --copper:#C2632E; --copper-dark:#A14E22; --copper-light:#F3E3D6;
   --teal:#1F6F66; --teal-light:#DCEEEA;
-  --paper:#F6F4EF; --white:#FFFFFF;
+  --danger:#C23B3B; --danger-light:#FBE7E5;
+  --paper:#F6F4EF; --paper-2:#EFEBE2;
+  --white:#FFFFFF;
   --text:#20242C; --muted:#6B6F76; --border:#E6E1D8;
   --font-display:'Space Grotesk',sans-serif;
   --font-body:'Inter',sans-serif;
@@ -26,212 +30,234 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--font-body);color:var(--text);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;}
-a{color:inherit;}
-.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+body{font-family:var(--font-body);color:var(--text);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px;}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:50;background:rgba(246,244,239,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1180px;margin:0 auto;}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.2px;}
-.brand .dot{width:9px;height:9px;border-radius:2px;background:var(--copper);display:inline-block;}
-.nav-links{display:flex;gap:30px;font-size:14px;font-weight:500;color:var(--muted);}
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;max-width:1200px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{width:36px;height:36px;background:var(--ink);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--copper);flex-shrink:0;}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--ink);}
+.brand-sub{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-top:1px;}
+.nav-links{display:flex;gap:34px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);padding-bottom:3px;border-bottom:2px solid transparent;transition:all .18s;}
 .nav-links a:hover{color:var(--text);}
-.nav-cta{display:flex;gap:14px;align-items:center;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:13.5px;text-decoration:none;border:none;cursor:pointer;transition:all .18s ease;}
-.btn-primary{background:var(--ink);color:#fff;}
-.btn-primary:hover{background:var(--copper-dark);}
-.btn-ghost{color:var(--text);font-weight:600;font-size:13.5px;}
+.nav-links a.active{color:var(--copper-dark);border-bottom-color:var(--copper);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:var(--font-body);}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border);}
+.btn-outline:hover{border-color:var(--ink);}
+.btn-dark{background:var(--ink);color:#fff;border:1.5px solid var(--ink);}
+.btn-dark:hover{background:var(--copper-dark);border-color:var(--copper-dark);}
+.btn-copper{background:var(--copper);color:#fff;}
+.btn-copper:hover{background:var(--copper-dark);}
+.btn-ghost-white{background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.3);}
+.btn-ghost-white:hover{background:rgba(255,255,255,0.22);}
+.btn-lg{padding:13px 28px;font-size:15px;border-radius:10px;}
 
-/* HERO */
+/* ── HERO ── */
 .hero{
-  padding:100px 0 80px;
   position:relative;
-  overflow:hidden;
-  background-image:
-    linear-gradient(120deg, rgba(22,26,35,0.94) 0%, rgba(22,26,35,0.88) 38%, rgba(22,26,35,0.55) 100%),
-    url('https://images.unsplash.com/photo-1749244768351-2726dc23d26c?fm=jpg&q=80&w=2000&auto=format&fit=crop');
-  background-size:cover;
-  background-position:center;
+  min-height:88vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  background-image:linear-gradient(rgba(22,26,35,0.72),rgba(22,26,35,0.80)),
+    url('assets\images\inven_img01.jpeg');
+  background-size:cover;background-position:center;
   color:#fff;
+  padding:80px 40px;
 }
-.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#F3D9C2;background:rgba(194,99,46,0.22);padding:6px 14px;border-radius:20px;letter-spacing:0.3px;margin-bottom:22px;}
-h1.headline{font-family:var(--font-display);font-size:50px;line-height:1.08;font-weight:700;letter-spacing:-1px;color:#fff;}
-h1.headline .accent{color:var(--copper);}
-.sub{font-size:17px;color:#C8C2B8;margin-top:22px;max-width:480px;}
-.hero-actions{display:flex;gap:14px;margin-top:34px;}
-.hero-actions .btn-ghost{color:#fff;}
-.btn-lg{padding:13px 26px;font-size:14.5px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#F3D9C2;background:rgba(194,99,46,0.25);border:1px solid rgba(194,99,46,0.4);padding:7px 16px;border-radius:20px;letter-spacing:0.4px;margin-bottom:28px;}
+.hero h1{font-family:var(--font-display);font-size:58px;line-height:1.08;font-weight:700;letter-spacing:-1.2px;max-width:780px;margin:0 auto 24px;}
+.hero h1 .accent{color:var(--copper);}
+.hero p{font-size:18px;color:rgba(255,255,255,0.75);max-width:560px;margin:0 auto 38px;line-height:1.7;}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 
-/* HERO VISUAL — stock shelf motif */
-.shelf-card{background:rgba(22,26,35,0.7);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:26px;box-shadow:0 20px 50px rgba(0,0,0,0.35);position:relative;}
-.shelf-card .label{font-size:11px;color:#A39788;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:16px;}
-.shelf-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:13px 16px;margin-bottom:10px;}
-.shelf-row:last-child{margin-bottom:0;}
-.shelf-name{color:#fff;font-size:13.5px;font-weight:600;}
-.shelf-code{color:#8B91A0;font-size:11px;font-family:var(--font-mono);margin-top:2px;}
-.shelf-bar{width:64px;height:6px;border-radius:4px;background:rgba(255,255,255,0.08);overflow:hidden;}
-.shelf-bar span{display:block;height:100%;border-radius:4px;}
-.fill-good{background:var(--teal);width:82%;}
-.fill-mid{background:var(--copper);width:46%;}
-.fill-low{background:#C23B3B;width:14%;}
-.shelf-qty{color:#fff;font-family:var(--font-mono);font-size:12.5px;font-weight:500;min-width:46px;text-align:right;}
-
-/* LOGO/TRUST STRIP */
-.trust{padding:30px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.trust-inner{display:flex;align-items:center;justify-content:center;gap:54px;flex-wrap:wrap;font-family:var(--font-display);font-weight:600;color:#A8A096;font-size:14px;letter-spacing:0.3px;}
-
-/* FEATURES */
+/* ── SECTION BASE ── */
 .section{padding:90px 0;}
-.section-head{max-width:560px;margin-bottom:54px;}
-.section-tag{font-size:12px;font-weight:700;color:var(--copper-dark);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
-.section-head h2{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-0.6px;color:var(--ink);}
-.section-head p{color:var(--muted);font-size:15.5px;margin-top:14px;}
+.section-tag{font-size:11.5px;font-weight:700;color:var(--copper-dark);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;}
+.section-head{text-align:center;max-width:640px;margin:0 auto 60px;}
+.section-head h2{font-family:var(--font-display);font-size:36px;font-weight:700;letter-spacing:-0.5px;color:var(--ink);margin-bottom:14px;}
+.section-head p{font-size:16px;color:var(--muted);}
 
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+/* ── WHY US — feature cards ── */
+.why-section{background:var(--paper);}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .feature-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:30px 26px;transition:transform .2s,box-shadow .2s;}
-.feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(22,26,35,0.08);}
-.feature-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
-.feature-icon.c1{background:var(--copper-light);}
-.feature-icon.c2{background:var(--teal-light);}
-.feature-icon.c3{background:#EFEBE2;}
-.feature-card h3{font-family:var(--font-display);font-size:17px;font-weight:600;margin-bottom:10px;color:var(--ink);}
-.feature-card p{font-size:14px;color:var(--muted);}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(22,26,35,0.09);}
+.f-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.f-icon.copper{background:var(--copper-light);color:var(--copper-dark);}
+.f-icon.teal{background:var(--teal-light);color:var(--teal);}
+.f-icon.paper{background:var(--paper-2);color:var(--ink);}
+.feature-card h3{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+.feature-card p{font-size:14px;color:var(--muted);line-height:1.65;}
 
-/* HOW IT WORKS */
-.how{background:var(--ink);color:#fff;}
-.how .section-tag{color:#E0A074;}
-.how .section-head h2{color:#fff;}
-.how .section-head p{color:#A8A096;}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
-.step{padding:0;}
-.step-num{font-family:var(--font-mono);font-size:13px;color:var(--copper);margin-bottom:14px;}
-.step h4{font-family:var(--font-display);font-size:16px;font-weight:600;margin-bottom:10px;}
-.step p{font-size:13.5px;color:#A8A096;}
-.step-line{height:1px;background:rgba(255,255,255,0.1);margin:0 0 24px;}
+/* ── SERVICES + STATS ── */
+.services-section{background:var(--paper);}
+.services-grid{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;}
+.services-tag{font-size:11.5px;font-weight:700;color:var(--copper-dark);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;}
+.services-grid h2{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-0.4px;color:var(--ink);margin-bottom:14px;}
+.services-grid>div>p{font-size:15px;color:var(--muted);margin-bottom:28px;}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
+.check-item{display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13.5px;font-weight:500;color:var(--text);}
+.check-dot{width:22px;height:22px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal);flex-shrink:0;}
+.link-more{font-size:14px;font-weight:700;color:var(--copper-dark);display:inline-flex;align-items:center;gap:6px;}
+.link-more:hover{color:var(--copper);}
+.stats-card{background:var(--ink);border-radius:20px;padding:36px 32px;color:#fff;}
+.stats-card h3{font-family:var(--font-display);font-size:19px;font-weight:700;color:#fff;margin-bottom:28px;}
+.stat-row{padding:22px 0;border-top:1px solid rgba(255,255,255,0.08);}
+.stat-row:first-of-type{border-top:none;padding-top:0;}
+.stat-row .num{font-family:var(--font-display);font-size:42px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1;}
+.stat-row .num .accent{color:var(--copper);}
+.stat-row .lbl{font-size:13px;color:#94A3B8;margin-top:6px;}
+.stats-card .btn{width:100%;justify-content:center;margin-top:28px;border-radius:10px;padding:13px;}
 
-/* STATS */
-.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;padding:50px 0;}
-.stat-strip .num{font-family:var(--font-display);font-size:38px;font-weight:700;color:var(--ink);letter-spacing:-0.5px;}
-.stat-strip .num .accent{color:var(--copper);}
-.stat-strip .lbl{font-size:13px;color:var(--muted);margin-top:6px;}
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--white);}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:44px;}
+.step-card{background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.step-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(22,26,35,0.09);}
+.step-img{position:relative;height:200px;overflow:hidden;}
+.step-img img{width:100%;height:100%;object-fit:cover;}
+.step-badge{position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--font-display);}
+.step-badge.b1{background:var(--copper-light);color:var(--copper-dark);}
+.step-badge.b2{background:var(--teal-light);color:var(--teal);}
+.step-badge.b3{background:var(--paper-2);color:var(--ink);}
+.step-body{padding:22px 22px 26px;text-align:center;}
+.step-body h4{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.step-body p{font-size:13.5px;color:var(--muted);}
+.how-cta{text-align:center;}
 
-/* CTA */
-.cta-band{background:linear-gradient(135deg,var(--ink),var(--ink-2));border-radius:22px;padding:60px 50px;display:flex;align-items:center;justify-content:space-between;color:#fff;position:relative;overflow:hidden;}
-.cta-band::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;background:rgba(194,99,46,0.2);border-radius:50%;}
-.cta-band h2{font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:-0.5px;max-width:420px;}
-.cta-band p{color:#A8A096;margin-top:10px;font-size:14.5px;}
+/* ── CONTACT STRIP ── */
+.contact-strip{background:var(--paper);}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.contact-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:26px;}
+.contact-card-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.contact-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.contact-icon.c1{background:var(--teal-light);color:var(--teal);}
+.contact-icon.c2{background:var(--copper-light);color:var(--copper-dark);}
+.contact-icon.c3{background:var(--paper-2);color:var(--ink);}
+.contact-card-head .label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);}
+.contact-card-head h4{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ink);margin-top:3px;}
+.contact-card p{font-size:13.5px;color:var(--text);line-height:1.9;}
+.contact-card span{color:var(--muted);}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:40px 0;}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:14px;}
+/* ── FOOTER ── */
+footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:50px;}
+.footer-brand{font-family:var(--font-display);font-size:17px;font-weight:700;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.footer-brand-icon{width:32px;height:32px;background:rgba(194,99,46,0.2);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--copper);font-weight:700;font-size:15px;}
+.footer-desc{font-size:13px;line-height:1.7;max-width:220px;color:#64748B;margin-bottom:22px;}
+.footer-socials{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:14px;color:#94A3B8;transition:.18s;}
+.social-btn:hover{background:rgba(194,99,46,0.2);color:var(--copper);}
+.footer-col h5{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748B;margin-bottom:18px;}
+.footer-col a{display:block;font-size:13.5px;color:#94A3B8;margin-bottom:11px;transition:.18s;}
+.footer-col a:hover{color:#fff;}
+.footer-contact-row{display:flex;align-items:center;gap:9px;font-size:13px;color:#94A3B8;margin-bottom:11px;}
+.footer-contact-row .ico{display:inline-flex;color:var(--copper);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-bottom p{font-size:12px;color:#475569;}
+.footer-badge{background:var(--copper);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
 
-@media (max-width:900px){
-  .hero-grid{grid-template-columns:1fr;}
-  .feature-grid{grid-template-columns:1fr 1fr;}
-  .steps{grid-template-columns:1fr 1fr;}
-  .stat-strip{grid-template-columns:1fr 1fr;}
-  h1.headline{font-size:38px;}
-  .nav-links{display:none;}
-  .cta-band{flex-direction:column;gap:24px;text-align:center;padding:44px 28px;}
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:1fr;}
+  .stats-card{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;}
+  .stats-card h3{grid-column:1/-1;}
+  .stats-card .btn{grid-column:1/-1;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
 }
-@media (max-width:600px){
-  .feature-grid,.steps,.stat-strip{grid-template-columns:1fr;}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hero h1{font-size:38px;}
+  .feature-grid,.steps-grid,.contact-grid{grid-template-columns:1fr;}
+  .checklist{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
   .wrap{padding:0 20px;}
+  .nav-inner{padding:14px 20px;}
+  .section{padding:60px 0;}
+  .stats-card{display:block;}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand"><span class="dot"></span> InvenTrack</div>
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it Works</a>
-      <a href="#stats">Why InvenTrack</a>
+    <div class="brand">
+      <div class="brand-icon"><?php echo icon('box', 20); ?></div>
+      <div>
+        <div class="brand-text">InvenTrack</div>
+        <div class="brand-sub">Inventory Platform</div>
+      </div>
     </div>
-    <div class="nav-cta">
-      <a href="index.php" class="btn-ghost">Sign in</a>
-      <a href="index.php" class="btn btn-primary">Open Dashboard →</a>
+    <div class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="index.php" class="btn btn-outline">Sign in</a>
+      <a href="index.php" class="btn btn-dark">Open Dashboard</a>
     </div>
   </div>
 </nav>
 
+<!-- HERO -->
 <header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">● Built for small & growing teams</span>
-      <h1 class="headline">Know what's on the shelf<br>before it runs <span class="accent">out.</span></h1>
-      <p class="sub">InvenTrack tracks every product, supplier, and stock movement in one place — so restocking is a decision you make on purpose, not a surprise you find out too late.</p>
-      <div class="hero-actions">
-        <a href="index.php" class="btn btn-primary btn-lg">Open Dashboard →</a>
-        <a href="#features" class="btn-ghost" style="display:flex;align-items:center;">See how it works</a>
-      </div>
-    </div>
-    <div class="shelf-card">
-      <div class="label">Live Stock Snapshot</div>
-      <div class="shelf-row">
-        <div><div class="shelf-name">Wireless Mouse</div><div class="shelf-code">SKU-1042</div></div>
-        <div class="shelf-bar"><span class="fill-good"></span></div>
-        <div class="shelf-qty">164</div>
-      </div>
-      <div class="shelf-row">
-        <div><div class="shelf-name">USB-C Cable 1m</div><div class="shelf-code">SKU-2207</div></div>
-        <div class="shelf-bar"><span class="fill-mid"></span></div>
-        <div class="shelf-qty">58</div>
-      </div>
-      <div class="shelf-row">
-        <div><div class="shelf-name">Laptop Stand</div><div class="shelf-code">SKU-3391</div></div>
-        <div class="shelf-bar"><span class="fill-low"></span></div>
-        <div class="shelf-qty">9</div>
-      </div>
+  <div>
+    <div class="hero-eyebrow">Built for modern inventory teams</div>
+    <h1>Smart Inventory,<br>Zero <span class="accent">Guesswork.</span></h1>
+    <p>Track every product, supplier, and stock movement in one place — so restocking is always a decision you make on purpose.</p>
+    <div class="hero-actions">
+      <a href="index.php" class="btn btn-copper btn-lg">Open Dashboard </a>
+      <a href="#how" class="btn btn-ghost-white btn-lg">How It Works</a>
     </div>
   </div>
 </header>
 
-<div class="trust">
-  <div class="wrap trust-inner">
-    <span>Real-Time Stock Tracking · </span><span>Supplier Management ·</span><span>Low-Stock Alerts ·</span><span>Inventory Reports</span>
-  </div>
-</div>
-
-<section class="section" id="features">
+<!-- WHY US -->
+<section class="section why-section" id="features">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-tag">Features</div>
-      <h2>Everything inventory needs, nothing it doesn't</h2>
-      <p>Four modules cover the full lifecycle of a product — from the moment it's added to the moment it's running low.</p>
+      <div class="section-tag">Why Choose Us</div>
+      <h2>What Makes InvenTrack Different</h2>
+      <p>We combine clean design with reliable data — so you always know what's on the shelf.</p>
     </div>
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="feature-icon c1">📦</div>
+        <div class="f-icon copper"><?php echo icon('box', 22); ?></div>
         <h3>Product Catalog</h3>
         <p>Add, edit, and organize products by category and supplier, with built-in validation so bad data never reaches the database.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon c2">🔄</div>
-        <h3>Stock Transactions</h3>
-        <p>Log every stock-in and stock-out movement, with current quantities recalculated automatically.</p>
+        <div class="f-icon teal"><?php echo icon('repeat', 22); ?></div>
+        <h3>Live Stock Tracking</h3>
+        <p>Log every stock-in and stock-out movement. Current quantities recalculate automatically on every transaction.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon c3">⚠️</div>
+        <div class="f-icon paper"><?php echo icon('alert-triangle', 22); ?></div>
         <h3>Low Stock Alerts</h3>
-        <p>Set a minimum threshold per product and get a clear, prioritized list the moment stock dips below it.</p>
+        <p>Set a minimum threshold per product and get a clear, prioritized alert list the moment stock dips below it.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon c1">🏢</div>
-        <h3>Supplier Records</h3>
-        <p>Keep contact details and order history for every supplier tied directly to the products they provide.</p>
+        <div class="f-icon teal"><?php echo icon('building', 22); ?></div>
+        <h3>Supplier Management</h3>
+        <p>Keep contact details and supply history for every supplier tied directly to the products they provide.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon c2">📊</div>
+        <div class="f-icon copper"><?php echo icon('bar-chart', 22); ?></div>
         <h3>Reports & Valuation</h3>
-        <p>See total inventory value, stock health, and trends at a glance — no spreadsheet exports required.</p>
+        <p>See total inventory value, stock health, and movement trends at a glance — no spreadsheet exports required.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon c3">🔐</div>
+        <div class="f-icon paper"><?php echo icon('code', 22); ?></div>
         <h3>Reliable by Design</h3>
         <p>Built on a clean PHP/MySQL OOP structure, so every action — add, edit, delete — is validated and predictable.</p>
       </div>
@@ -239,69 +265,184 @@ footer{border-top:1px solid var(--border);padding:40px 0;}
   </div>
 </section>
 
-<section class="section how" id="how">
+<!-- SERVICES + STATS -->
+<section class="section services-section">
+  <div class="wrap">
+    <div class="services-grid">
+      <div>
+        <div class="services-tag">Our Modules</div>
+        <h2>Complete Inventory Control</h2>
+        <p>Our system covers the full lifecycle of every product — from the moment it's added to the moment it needs restocking.</p>
+        <div class="checklist">
+          <div class="check-item"><div class="check-dot"></div>Product catalog management</div>
+          <div class="check-item"><div class="check-dot"></div>Stock transaction logs</div>
+          <div class="check-item"><div class="check-dot"></div>Low stock alert dashboard</div>
+          <div class="check-item"><div class="check-dot"></div>Supplier records</div>
+          <div class="check-item"><div class="check-dot"></div>Inventory value reports</div>
+          <div class="check-item"><div class="check-dot"></div>Category-grouped product view</div>
+        </div>
+        <a href="index.php" class="link-more">Explore the Dashboard </a>
+      </div>
+      <div class="stats-card">
+        <h3>Trusted by Teams Who Count</h3>
+        <div class="stat-row">
+          <div class="num"><span class="accent">6</span>+</div>
+          <div class="lbl">Core system modules</div>
+        </div>
+        <div class="stat-row">
+          <div class="num">100%</div>
+          <div class="lbl">MySQL-backed data records</div>
+        </div>
+        <div class="stat-row">
+          <div class="num">0</div>
+          <div class="lbl">Spreadsheets needed</div>
+        </div>
+        <a href="index.php" class="btn btn-outline" style="background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.18);">Open Dashboard </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section" id="how">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-tag">How it works</div>
-      <h2>From empty database to full visibility</h2>
+      <div class="section-tag">Simple Process</div>
+      <h2>How It Works</h2>
       <p>Four steps, no training manual required.</p>
     </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-line"></div>
-        <h4>Add your products</h4>
-        <p>Enter products with category, supplier, and a minimum stock threshold.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-img">
+          <img src="assets\images\inven_img02.jpeg" alt="Add products">
+          <div class="step-badge b1">1</div>
+        </div>
+        <div class="step-body">
+          <h4>Add Your Products</h4>
+          <p>Enter products with name, code, category, supplier, price, and initial stock level — all in one form.</p>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-line"></div>
-        <h4>Record stock movement</h4>
-        <p>Every delivery or sale is logged as a transaction, in or out.</p>
+      <div class="step-card">
+        <div class="step-img">
+          <img src="assets\images\inven_img03.jpeg">
+          <div class="step-badge b2">2</div>
+        </div>
+        <div class="step-body">
+          <h4>Record Stock Movement</h4>
+          <p>Log every delivery or sale as a transaction. Stock levels recalculate instantly, in or out.</p>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-line"></div>
-        <h4>Watch the dashboard</h4>
-        <p>Stock levels, value, and alerts update automatically as you go.</p>
+      <div class="step-card">
+        <div class="step-img">
+          <img src="assets\images\inven_img04.jpeg">
+          <div class="step-badge b3">3</div>
+        </div>
+        <div class="step-body">
+          <h4>Act on the Dashboard</h4>
+          <p>Monitor stock health, spot low-stock items, check reports, and restock before shelves run empty.</p>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div class="step-line"></div>
-        <h4>Act before it's empty</h4>
-        <p>Restock straight from the low-stock list — no digging required.</p>
-      </div>
+    </div>
+    <div class="how-cta">
+      <a href="index.php" class="btn btn-copper btn-lg">Get Started </a>
     </div>
   </div>
 </section>
 
-<section class="section" id="stats">
+<!-- CONTACT STRIP -->
+<section class="section contact-strip" id="contact">
   <div class="wrap">
-    <div class="stat-strip">
-      <div><div class="num"><span class="accent">6</span>+</div><div class="lbl">Core modules</div></div>
-      <div><div class="num">100%</div><div class="lbl">MySQL-backed records</div></div>
-      <div><div class="num">3</div><div class="lbl">Tap-to-restock alerts</div></div>
-      <div><div class="num">0</div><div class="lbl">Spreadsheets needed</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0;">
-  <div class="wrap">
-    <div class="cta-band">
-      <div>
-        <h2>Stop guessing what's in stock.</h2>
-        <p>Open the dashboard and see your full inventory picture in seconds.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-card-head">
+          <div class="contact-icon c1"><?php echo icon('clock', 18); ?></div>
+          <div>
+            <div class="label">System Access</div>
+            <h4>Availability</h4>
+          </div>
+        </div>
+        <p>
+          <span>Dashboard:</span> Available 24/7<br>
+          <span>Data:</span> Real-time updates<br>
+          <span>Reports:</span> Generated on demand
+        </p>
       </div>
-      <a href="index.php" class="btn btn-primary btn-lg" style="background:#fff;color:var(--ink);">Open Dashboard →</a>
+      <div class="contact-card">
+        <div class="contact-card-head">
+          <div class="contact-icon c2"><?php echo icon('code', 18); ?></div>
+          <div>
+            <div class="label">Technology</div>
+            <h4>Built With</h4>
+          </div>
+        </div>
+        <p>
+          <span>Backend:</span> PHP (OOP)<br>
+          <span>Database:</span> MySQL<br>
+          <span>Frontend:</span> HTML · CSS · JavaScript
+        </p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-head">
+          <div class="contact-icon c3"><?php echo icon('info', 18); ?></div>
+          <div>
+            <div class="label">Project Info</div>
+            <h4>About InvenTrack</h4>
+          </div>
+        </div>
+        <p>
+          <span>Type:</span> Group Assignment<br>
+          <span>Subject:</span> CST 226-2 Web App Dev<br>
+          <span>Members:</span> 7 group members
+        </p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="wrap footer-inner">
-    <div>&copy; 2026 InvenTrack — Inventory Management System</div>
-    <div>Built with PHP · MySQL · HTML · CSS · JavaScript</div>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-icon"><?php echo icon('box', 16); ?></div>
+          InvenTrack
+        </div>
+        <p class="footer-desc">A complete inventory management platform built with PHP, MySQL, and a clean OOP architecture.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">gh</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <a href="#">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#contact">Contact</a>
+        <a href="index.php">Dashboard</a>
+      </div>
+      <div class="footer-col">
+        <h5>Modules</h5>
+        <a href="index.php">Dashboard</a>
+        <a href="pages/products/list.php">Products</a>
+        <a href="pages/inventory/list.php">Stock Levels</a>
+        <a href="pages/suppliers/list.php">Suppliers</a>
+        <a href="pages/reports/index.php">Reports</a>
+      </div>
+      <div class="footer-col">
+        <h5>Project</h5>
+        <div class="footer-contact-row"><span class="ico"><?php echo icon('tag', 13); ?></span> CST 226-2</div>
+        <div class="footer-contact-row"><span class="ico"><?php echo icon('users', 13); ?></span> Group Project</div>
+        <div class="footer-contact-row"><span class="ico"><?php echo icon('hash', 13); ?></span> Group 03</div>
+        <div class="footer-contact-row"><span class="ico"><?php echo icon('building', 13); ?></span> uva wellassa university of srilanka</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 InvenTrack — Inventory Management System. All rights reserved.</p>
+      <span class="footer-badge">CST 226-2</span>
+    </div>
   </div>
 </footer>
 

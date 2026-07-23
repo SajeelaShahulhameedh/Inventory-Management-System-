@@ -2,7 +2,7 @@
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
-$supplier    = new Supplier($conn);
+$supplier = new Supplier($conn);
 $supplier_id = $_GET['id'] ?? 0;
 if ($supplier_id <= 0) { header("Location: list.php"); exit; }
 $supplierData = $supplier->getSupplierById($supplier_id);
@@ -19,7 +19,7 @@ require_once '../../includes/layout.php';
     <div><h1><?php echo htmlspecialchars($supplierData['supplier_name']); ?></h1><p>Supplier Profile</p></div>
     <div style="display:flex;gap:10px;">
         <a href="edit.php?id=<?php echo $supplierData['supplier_id']; ?>" class="btn btn-warning">Edit</a>
-        <a href="list.php" class="btn btn-secondary">← Back</a>
+        <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
     </div>
 </div>
 
