@@ -48,7 +48,7 @@ $resolvedJs = isset($jsPath) ? $jsPath : ($assetBase . 'assets/js/script.js');
 <!-- SIDEBAR -->
 <aside class="sidebar">
     <div class="sidebar-brand">
-        <h2><span class="sidebar-logo"><?php echo icon('box', 18); ?></span> InvenTrack</h2>
+        <h2>InvenTrack</h2>
         <p>Inventory Management</p>
     </div>
 
