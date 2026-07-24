@@ -3,6 +3,8 @@ require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 require_once '../../classes/Product.php';
 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 $inventory = new Inventory($conn);
 $product = new Product($conn);
 $message = ''; $messageType = '';
@@ -10,6 +12,9 @@ $preSelected = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
 $allProducts = $product->getAllProducts();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $message = 'Invalid CSRF token. Please reload and try again.'; $messageType = 'danger';
+    } else {
     $productId = (int)$_POST['product_id'];
     $type = $_POST['transaction_type'];
     $quantity = (int)$_POST['quantity'];
@@ -31,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $message = 'Failed to record transaction.'; $messageType = 'danger';
             }
         }
+    }
     }
 }
 
@@ -58,6 +64,7 @@ require_once '../../includes/layout.php';
     <div class="card-header"><h3>Transaction Form</h3></div>
     <div class="card-body">
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
             <div class="form-group">
                 <label>Product <span class="text-danger">*</span></label>
                 <select name="product_id" required onchange="loadStock(this.value)">

@@ -3,10 +3,12 @@ require_once 'config/database.php';
 require_once 'classes/Product.php';
 require_once 'classes/Inventory.php';
 require_once 'classes/Supplier.php';
+require_once 'classes/PurchaseOrder.php';
 
 $product = new Product($conn);
 $inventory = new Inventory($conn);
 $supplier = new Supplier($conn);
+$purchaseOrder = new PurchaseOrder($conn);
 
 $allProducts = $product->getAllProducts();
 $totalProducts = $allProducts ? count($allProducts) : 0;
@@ -15,6 +17,7 @@ $lowStockItems = $inventory->getLowStockItems();
 $lowStockCount = $lowStockItems ? count($lowStockItems) : 0;
 $allSuppliers = $supplier->getAllSuppliers();
 $totalSuppliers = $allSuppliers ? count($allSuppliers) : 0;
+$pendingOrdersCount = $purchaseOrder->countPending();
 
 $totalInventoryValue = 0;
 if ($allInventory) {
@@ -63,6 +66,14 @@ require_once 'includes/layout.php';
             <div class="stat-label">Inventory Value</div>
             <div class="stat-number" style="font-size:20px;">Rs. <?php echo number_format($totalInventoryValue, 0); ?></div>
             <a href="pages/reports/inventory-report.php" class="stat-link">Full report <?php echo icon('chevron-right', 13); ?></a>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><?php echo icon('clipboard', 22); ?></div>
+        <div class="stat-info">
+            <div class="stat-label">Pending Orders</div>
+            <div class="stat-number"><?php echo $pendingOrdersCount; ?></div>
+            <a href="pages/purchase-orders/list.php" class="stat-link">View orders <?php echo icon('chevron-right', 13); ?></a>
         </div>
     </div>
 </div>

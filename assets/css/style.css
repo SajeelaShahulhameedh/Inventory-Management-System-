@@ -25,6 +25,8 @@
     --danger-light: #FBE7E5;
     --warning: #B9842B;
     --warning-light: #FAEEDA;
+    --purple: #6B4E9E;
+    --purple-light: #EAE3F5;
 
     --bg-main: #F6F4EF;
     --bg-white: #FFFFFF;
@@ -227,7 +229,7 @@ body {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     margin-bottom: 28px;
 }
@@ -256,11 +258,13 @@ body {
 .stat-icon.green  { color: var(--teal); }
 .stat-icon.red    { color: var(--danger); }
 .stat-icon.yellow { color: var(--warning); }
+.stat-icon.purple { color: var(--purple); }
 
 .stat-icon.blue   { background: var(--copper-light); }
 .stat-icon.green  { background: var(--teal-light); }
 .stat-icon.red    { background: var(--danger-light); }
 .stat-icon.yellow { background: var(--warning-light); }
+.stat-icon.purple { background: var(--purple-light); }
 
 .stat-info { flex: 1; min-width: 0; }
 .stat-label { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
@@ -645,6 +649,8 @@ footer {
     --danger-light: #FBE7E5;
     --warning: #B9842B;
     --warning-light: #FAEEDA;
+    --purple: #6B4E9E;
+    --purple-light: #EAE3F5;
 
     --bg-main: #F6F4EF;
     --bg-white: #FFFFFF;
@@ -847,7 +853,7 @@ body {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     margin-bottom: 28px;
 }
@@ -876,11 +882,13 @@ body {
 .stat-icon.green  { color: var(--teal); }
 .stat-icon.red    { color: var(--danger); }
 .stat-icon.yellow { color: var(--warning); }
+.stat-icon.purple { color: var(--purple); }
 
 .stat-icon.blue   { background: var(--copper-light); }
 .stat-icon.green  { background: var(--teal-light); }
 .stat-icon.red    { background: var(--danger-light); }
 .stat-icon.yellow { background: var(--warning-light); }
+.stat-icon.purple { background: var(--purple-light); }
 
 .stat-info { flex: 1; min-width: 0; }
 .stat-label { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }

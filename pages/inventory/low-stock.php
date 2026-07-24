@@ -14,7 +14,8 @@ require_once '../../includes/layout.php';
 <div class="page-header">
     <div><h1>Low Stock Alert</h1><p><?php echo $lowStockItems ? count($lowStockItems) : 0; ?> item(s) need restocking</p></div>
     <div style="display:flex;gap:10px;">
-        <a href="add-transaction.php" class="btn btn-primary"><?php echo icon('plus', 15); ?> Add Stock</a>
+        <a href="../purchase-orders/add.php" class="btn btn-primary"><?php echo icon('clipboard', 15); ?> Create Purchase Order</a>
+        <a href="add-transaction.php" class="btn btn-secondary"><?php echo icon('plus', 15); ?> Manual Stock Adjustment</a>
         <a href="list.php" class="btn btn-secondary"><?php echo icon('layers', 15); ?> All Inventory</a>
     </div>
 </div>
@@ -38,7 +39,10 @@ require_once '../../includes/layout.php';
                     <td><span class="text-danger fw-bold">+<?php echo max(0, $needed); ?></span></td>
                     <td>Rs. <?php echo number_format($item['unit_price'], 2); ?></td>
                     <td><span class="badge <?php echo $isOut ? 'badge-danger' : 'badge-warning'; ?>"><?php echo $isOut ? 'Out of Stock' : 'Low Stock'; ?></span></td>
-                    <td><a href="add-transaction.php?product_id=<?php echo $item['product_id']; ?>" class="btn btn-sm btn-warning">Restock</a></td>
+                    <td>
+                        <a href="../purchase-orders/add.php?product_id=<?php echo $item['product_id']; ?>" class="btn btn-sm btn-primary"><?php echo icon('clipboard', 13); ?> Order</a>
+                        <a href="add-transaction.php?product_id=<?php echo $item['product_id']; ?>" class="btn btn-sm btn-secondary">Adjust</a>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>

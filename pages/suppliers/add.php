@@ -2,10 +2,15 @@
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 $supplier = new Supplier($conn);
 $message = ''; $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $message = 'Invalid CSRF token. Please reload and try again.'; $messageType = 'danger';
+    } else {
     $supplier->supplier_name = trim($_POST['supplier_name']);
     $supplier->contact_person = trim($_POST['contact_person']);
     $supplier->email = trim($_POST['email']);
@@ -23,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $supplier->phone = $supplier->address = $supplier->city = $supplier->state = $supplier->zip_code = '';
     } else {
         $message = 'Failed to add supplier. Please try again.'; $messageType = 'danger';
+    }
     }
 }
 
@@ -48,6 +54,7 @@ require_once '../../includes/layout.php';
     <div class="card-header"><h3>Supplier Details</h3></div>
     <div class="card-body">
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
             <div class="form-row">
                 <div class="form-group">
                     <label>Supplier Name <span class="text-danger">*</span></label>

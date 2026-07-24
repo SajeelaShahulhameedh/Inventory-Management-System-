@@ -2,6 +2,8 @@
 require_once '../../config/database.php';
 require_once '../../classes/Inventory.php';
 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 $inventory = new Inventory($conn);
 $inventory_id = $_GET['id'] ?? 0;
 $message = '';
@@ -10,6 +12,9 @@ $inventoryData = $inventory->getInventoryById($inventory_id);
 if (!$inventoryData) { header("Location: list.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $message = '<div class="alert alert-danger">Invalid CSRF token. Please reload and try again.</div>';
+    } else {
     $inventory->inventory_id = $inventory_id;
     $inventory->current_stock = $_POST['current_stock'] ?? 0;
     $inventory->minimum_stock = $_POST['minimum_stock'] ?? 0;
@@ -19,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $inventoryData = $inventory->getInventoryById($inventory_id);
     } else {
         $message = '<div class="alert alert-danger">Error updating inventory. Please try again.</div>';
+    }
     }
 }
 
@@ -39,6 +45,7 @@ require_once '../../includes/layout.php';
     <div class="card-header"><h3>Stock Level Settings</h3></div>
     <div class="card-body">
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
             <div class="form-row">
                 <div class="form-group">
                     <label>Current Stock <span class="text-danger">*</span></label>
