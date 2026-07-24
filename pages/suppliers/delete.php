@@ -1,14 +1,19 @@
 <?php
 /**
- * DELETE SUPPLIER PAGE
- * Handle supplier deletion with confirmation
+ * DELETE SUPPLIER PAGE (uses shared layout)
+ * Consistent UI, CSRF-protected, shows a clear error if the supplier
+ * still has products assigned to it (blocked by the FK constraint).
  */
 
 require_once '../../config/database.php';
 require_once '../../classes/Supplier.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $supplier = new Supplier($conn);
-$supplier_id = $_GET['id'] ?? 0;
+$supplier_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($supplier_id <= 0) {
     header("Location: list.php");
@@ -16,90 +21,70 @@ if ($supplier_id <= 0) {
 }
 
 $supplierData = $supplier->getSupplierById($supplier_id);
-
 if (!$supplierData) {
     header("Location: list.php");
     exit;
 }
 
-// Handle deletion
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_delete'])) {
-    if ($supplier->deleteSupplier($supplier_id)) {
-        header("Location: list.php?message=deleted");
-        exit;
+$errorMsg = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $errorMsg = 'Invalid CSRF token. Please reload the page and try again.';
+    } else {
+        if ($supplier->deleteSupplier($supplier_id)) {
+            header("Location: list.php?message=deleted");
+            exit;
+        } else {
+            $errorMsg = 'This supplier could not be deleted. It likely still has products assigned to it — reassign or remove those products first.';
+        }
     }
 }
 
+$pageTitle = 'Delete Supplier';
+$pageSubtitle = htmlspecialchars($supplierData['supplier_name']);
+$activeMenu = 'suppliers';
+$cssPath = '../../assets/css/style.css';
+$jsPath = '../../assets/js/script.js';
+$basePath = '../../';
+require_once '../../includes/layout.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Supplier - Inventory Management System</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
-<body>
-    <!-- HEADER -->
-    <header>
-        <h1>Inventory Management System</h1>
-    </header>
 
-    <!-- NAVIGATION -->
-    <nav>
-        <ul>
-            <li><a href="../../index.php">Dashboard</a></li>
-            <li><a href="../../pages/products/list.php">Products</a></li>
-            <li><a href="../../pages/inventory/list.php">Inventory</a></li>
-            <li><a href="list.php" class="active">Suppliers</a></li>
-            <li><a href="../../pages/reports/index.php">Reports</a></li>
-        </ul>
-    </nav>
+<div class="page-header">
+    <div>
+        <h1>Delete Supplier</h1>
+        <p>Are you sure you want to remove this supplier permanently?</p>
+    </div>
+    <a href="list.php" class="btn btn-secondary"><?php echo icon('arrow-left', 15); ?> Back</a>
+</div>
 
-    <!-- MAIN CONTAINER -->
-    <div class="container">
-        <div class="content">
-            <!-- WARNING ALERT -->
-            <div class="alert alert-danger">
-                <strong> Warning!</strong> You are about to delete a supplier. This action cannot be undone.
-            </div>
+<?php if ($errorMsg): ?>
+    <div class="alert alert-danger"><?php echo icon('alert-circle', 16); ?> <?php echo htmlspecialchars($errorMsg); ?></div>
+<?php endif; ?>
 
-            <!-- SUPPLIER INFO -->
-            <div class="card" style="margin: 20px 0;">
-                <div class="card-title">Supplier to Delete</div>
-                <div class="card-body">
-                    <p><strong>Name:</strong> <?php echo htmlspecialchars($supplierData['supplier_name']); ?></p>
-                    <p><strong>Contact:</strong> <?php echo htmlspecialchars($supplierData['contact_person'] ?? 'N/A'); ?></p>
-                    <p><strong>Email:</strong> <?php echo htmlspecialchars($supplierData['email'] ?? 'N/A'); ?></p>
-                    <p><strong>Phone:</strong> <?php echo htmlspecialchars($supplierData['phone'] ?? 'N/A'); ?></p>
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header"><h3>Supplier to Delete</h3></div>
+    <div class="card-body">
+        <p><strong>Name:</strong> <?php echo htmlspecialchars($supplierData['supplier_name']); ?></p>
+        <p><strong>Contact:</strong> <?php echo htmlspecialchars($supplierData['contact_person'] ?? 'N/A'); ?></p>
+        <p><strong>Email:</strong> <?php echo htmlspecialchars($supplierData['email'] ?? 'N/A'); ?></p>
+        <p><strong>Phone:</strong> <?php echo htmlspecialchars($supplierData['phone'] ?? 'N/A'); ?></p>
 
-            <!-- CONFIRMATION FORM -->
-            <form method="POST" style="margin: 30px 0;">
-                <div style="background-color: #fff3cd; border-left: 4px solid #f39c12; padding: 15px; border-radius: 5px; margin: 20px 0;">
-                    <p style="margin: 0;">
-                        <strong>Are you sure you want to delete this supplier?</strong><br>
-                        This will also affect related product records.
-                    </p>
-                </div>
+        <div class="alert alert-warning" style="margin-top:16px;">
+            <?php echo icon('alert-triangle', 16); ?>
+            <span>Deleting this supplier cannot be undone. If any products are still linked to it, the deletion will be blocked.</span>
+        </div>
 
-                <div style="display: flex; gap: 10px; margin-top: 30px;">
-                    <button type="submit" name="confirm_delete" value="1" class="btn btn-danger">
-                        Yes, Delete Supplier
-                    </button>
-                    <a href="view.php?id=<?php echo $supplier_id; ?>" class="btn btn-secondary">Cancel</a>
+        <div style="margin-top:18px;">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <button type="submit" name="confirm_delete" value="1" class="btn btn-danger">Yes, delete supplier</button>
+                    <a href="list.php" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2024 Inventory Management System. All rights reserved.</p>
-    </footer>
-
-    <!-- SCRIPTS -->
-    <script src="../../assets/js/script.js"></script>
-</body>
-</html>
+<?php require_once '../../includes/layout-end.php'; ?>

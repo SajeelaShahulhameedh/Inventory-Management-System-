@@ -39,8 +39,7 @@ img{display:block;max-width:100%;}
 .nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;max-width:1200px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:10px;}
-.brand-icon{width:36px;height:36px;background:var(--ink);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.brand-icon span{color:var(--copper);font-size:18px;font-weight:700;font-family:var(--font-display);}
+.brand-icon{width:36px;height:36px;background:var(--ink);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--copper);flex-shrink:0;}
 .brand-text{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--ink);}
 .brand-sub{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-top:1px;}
 .nav-links{display:flex;gap:34px;}
@@ -191,7 +190,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
 <nav class="nav">
   <div class="nav-inner">
     <div class="brand">
-      <div class="brand-icon"><span>I</span></div>
+      <div class="brand-icon"><?php echo icon('box', 20); ?></div>
       <div>
         <div class="brand-text">InvenTrack</div>
         <div class="brand-sub">Inventory Platform</div>
@@ -406,7 +405,7 @@ footer{background:var(--ink);color:#94A3B8;padding:60px 0 0;}
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <div class="footer-brand-icon">I</div>
+          <div class="footer-brand-icon"><?php echo icon('box', 16); ?></div>
           InvenTrack
         </div>
         <p class="footer-desc">A complete inventory management platform built with PHP, MySQL, and a clean OOP architecture.</p>

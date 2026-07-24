@@ -1,8 +1,18 @@
 <?php
 require_once '../../config/database.php';
 require_once '../../classes/Product.php';
+require_once '../../classes/Category.php';
+require_once '../../classes/Supplier.php';
+require_once '../../includes/icons.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 $product = new Product($conn);
+$categoryObj = new Category($conn);
+$supplierObj = new Supplier($conn);
+$categories = $categoryObj->getAll();
+$suppliers = $supplierObj->getAllSuppliers();
+
 $product_id = $_GET['id'] ?? 0;
 $message = '';
 if ($product_id <= 0) { header("Location: list.php"); exit; }
@@ -10,19 +20,28 @@ $productData = $product->getProductById($product_id);
 if (!$productData) { header("Location: list.php"); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        $message = '<div class="alert alert-danger">Invalid CSRF token. Please reload and try again.</div>';
+    } else {
     $product->product_id = $product_id;
     $product->product_name = $_POST['product_name'] ?? '';
-    $product->product_code = $_POST['product_code'] ?? '';
+    $product->product_code = trim($_POST['product_code'] ?? '');
     $product->category_id = $_POST['category_id'] ?? 0;
     $product->supplier_id = $_POST['supplier_id'] ?? 0;
     $product->unit_price = $_POST['unit_price'] ?? 0;
     $product->description = $_POST['description'] ?? '';
     $product->image_url = $_POST['image_url'] ?? '';
-    if ($product->updateProduct()) {
+
+    if ($product->product_code === '') {
+        $message = '<div class="alert alert-danger">Product code is required.</div>';
+    } elseif ($product->codeExists($product->product_code, $product_id)) {
+        $message = '<div class="alert alert-danger">' . icon('alert-circle', 16) . ' Product code "' . htmlspecialchars($product->product_code) . '" is already used by another product. Please choose a different code.</div>';
+    } elseif ($product->updateProduct()) {
         $message = '<div class="alert alert-success">Product updated successfully!</div>';
         $productData = $product->getProductById($product_id);
     } else {
         $message = '<div class="alert alert-danger">Error updating product. Please try again.</div>';
+    }
     }
 }
 
@@ -43,6 +62,7 @@ require_once '../../includes/layout.php';
     <div class="card-header"><h3>Edit Product Details</h3></div>
     <div class="card-body">
         <form method="POST" onsubmit="return validateProductForm()">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
             <div class="form-row">
                 <div class="form-group">
                     <label>Product Name <span class="text-danger">*</span></label>
@@ -58,20 +78,18 @@ require_once '../../includes/layout.php';
                     <label>Category <span class="text-danger">*</span></label>
                     <select id="category_id" name="category_id" required>
                         <option value="">-- Select Category --</option>
-                        <option value="1" <?php echo $productData['category_id']==1?'selected':''; ?>>Electronics</option>
-                        <option value="2" <?php echo $productData['category_id']==2?'selected':''; ?>>Furniture</option>
-                        <option value="3" <?php echo $productData['category_id']==3?'selected':''; ?>>Office Supplies</option>
-                        <option value="4" <?php echo $productData['category_id']==4?'selected':''; ?>>Tools</option>
-                        <option value="5" <?php echo $productData['category_id']==5?'selected':''; ?>>Other</option>
+                        <?php foreach ($categories as $c): ?>
+                            <option value="<?php echo (int)$c['category_id']; ?>" <?php echo $productData['category_id']==$c['category_id']?'selected':''; ?>><?php echo htmlspecialchars($c['category_name']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Supplier <span class="text-danger">*</span></label>
                     <select id="supplier_id" name="supplier_id" required>
                         <option value="">-- Select Supplier --</option>
-                        <option value="1" <?php echo $productData['supplier_id']==1?'selected':''; ?>>Supplier 1</option>
-                        <option value="2" <?php echo $productData['supplier_id']==2?'selected':''; ?>>Supplier 2</option>
-                        <option value="3" <?php echo $productData['supplier_id']==3?'selected':''; ?>>Supplier 3</option>
+                        <?php foreach ($suppliers as $s): ?>
+                            <option value="<?php echo (int)$s['supplier_id']; ?>" <?php echo $productData['supplier_id']==$s['supplier_id']?'selected':''; ?>><?php echo htmlspecialchars($s['supplier_name']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
