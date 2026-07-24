@@ -85,6 +85,10 @@ require_once 'includes/layout.php';
         <div class="action-icon"><?php echo icon('bar-chart', 24); ?></div>
         <div class="action-label">Generate Report</div>
     </a>
+    <a href="pages/purchase-orders/add.php" class="action-card">
+        <div class="action-icon"><?php echo icon('clipboard', 24); ?></div>
+        <div class="action-label">New Purchase Order</div>
+    </a>
 </div>
 
 <!-- QUICK PRODUCT LOOKUP -->

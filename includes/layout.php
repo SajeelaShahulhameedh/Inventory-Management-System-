@@ -92,6 +92,13 @@ $resolvedJs = isset($jsPath) ? $jsPath : ($assetBase . 'assets/js/script.js');
             </a>
         </li>
 
+        <li>
+            <a href="<?php echo $basePath ?? '../'; ?>pages/purchase-orders/list.php"
+               class="<?php echo ($activeMenu === 'purchase-orders') ? 'active' : ''; ?>">
+                <span class="menu-icon"><?php echo icon('clipboard', 18); ?></span> Purchase Orders
+            </a>
+        </li>
+
         <li class="sidebar-section-title">Management</li>
 
         <li>
